@@ -1,0 +1,2 @@
+# stats
+GoSwap stats interface
