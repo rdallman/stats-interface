@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:goswapinfo/common/api.dart';
-import 'package:goswapinfo/common/totals.dart';
+import 'package:goswapinfo/common/total.dart';
 
 class LiquidityChart extends StatefulWidget {
   @override
@@ -17,6 +17,40 @@ class LiquidityChartState extends State<LiquidityChart> {
     super.initState();
     totalsF = Api.fetchTotals();
     isShowingMainData = false;
+    // Api.fetchPairLiquidity('FAST-WGO').then((value) {
+    //   for (var e in value) {
+    //     print(e);
+    //     print(e.toJson());
+    //   }
+    // }, onError: (e) {
+    //   print(e);
+    // });
+    // Api.fetchPairVolume('FAST-WGO').then((value) {
+    //   for (var e in value) {
+    //     print(e);
+    //     print(e.toJson());
+    //   }
+    // }, onError: (e) {
+    //   print(e);
+    // });
+    // Api.fetchTokens().then((value) {
+    //   print("tokens");
+    //   for (var e in value) {
+    //     print(e);
+    //     print(e.toJson());
+    //   }
+    // }, onError: (e) {
+    //   print(e);
+    // });
+    // Api.fetchVolume('WGO').then((value) {
+    //   print("token volume");
+    //   for (var e in value) {
+    //     print(e);
+    //     print(e.toJson());
+    //   }
+    // }, onError: (e) {
+    //   print(e);
+    // });
   }
 
   @override
@@ -151,12 +185,6 @@ class LiquidityChartState extends State<LiquidityChart> {
   }
 
   List<LineChartBarData> linesBarData(AsyncSnapshot<List<Total>> totals) {
-    for (var e in totals.data) {
-      print(e.timeStamp.hour.toDouble());
-      print(e.liquidityUSD);
-      print(e.volumeUSD);
-    }
-
     return [
       LineChartBarData(
         spots: List<FlSpot>.from(totals.data.map((a) => FlSpot(
