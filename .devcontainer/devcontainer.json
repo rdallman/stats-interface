@@ -1,0 +1,22 @@
+{
+  "name": "Flutter",
+  "dockerFile": "Dockerfile",
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "extensions": [
+    "dart-code.dart-code",
+    "dart-code.flutter"
+  ],
+  "remoteUser": "vscode",
+  "runArgs": [
+    "--device",
+    "/dev/kvm",
+    "--device",
+    "/dev/dri:/dev/dri",
+    "-v",
+    "/tmp/.X11-unix:/tmp/.X11-unix",
+    "-e",
+    "DISPLAY"
+  ]
+}
