@@ -1,3 +1,5 @@
+import 'package:decimal/decimal.dart';
+
 class Token {
   // "tokens": [
   //   {
@@ -11,16 +13,16 @@ class Token {
   String name;
   String symbol;
   int decimals;
-  BigInt totalSupply;
-  BigInt cMCPrice;
+  Decimal totalSupply;
+  Decimal cMCPrice;
 
   Token(
       {String address,
       String name,
       String symbol,
       int decimals,
-      BigInt totalSupply,
-      BigInt cMCPrice})
+      Decimal totalSupply,
+      Decimal cMCPrice})
       : this.address = address,
         this.name = name,
         this.symbol = symbol,
@@ -33,8 +35,8 @@ class Token {
         name = json['name'],
         symbol = json['symbol'],
         decimals = json['decimals'],
-        totalSupply = BigInt.parse(json['totalSupply']),
-        cMCPrice = BigInt.parse(json['CMCPrice']);
+        totalSupply = Decimal.parse(json['totalSupply']),
+        cMCPrice = Decimal.parse(json['CMCPrice']);
 
   Map<String, dynamic> toJson() => {
         'address': address,

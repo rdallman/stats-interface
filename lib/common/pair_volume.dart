@@ -1,3 +1,5 @@
+import 'package:decimal/decimal.dart';
+
 class PairVolume {
   // "overTime": [
   //   {
@@ -12,24 +14,24 @@ class PairVolume {
   //     "volumeUSD": "7009.00015740561960383837348579787573"
   DateTime timeStamp;
   String pair;
-  double amount0In;
-  double amount0Out;
-  double price0USD;
-  double amount1In;
-  double amount1Out;
-  double price1USD;
-  double volumeUSD;
+  Decimal amount0In;
+  Decimal amount0Out;
+  Decimal price0USD;
+  Decimal amount1In;
+  Decimal amount1Out;
+  Decimal price1USD;
+  Decimal volumeUSD;
 
   PairVolume(
       {DateTime timeStamp,
       String pair,
-      double amount0In,
-      double amount0Out,
-      double price0USD,
-      double amount1In,
-      double amount1Out,
-      double price1USD,
-      double volumeUSD})
+      Decimal amount0In,
+      Decimal amount0Out,
+      Decimal price0USD,
+      Decimal amount1In,
+      Decimal amount1Out,
+      Decimal price1USD,
+      Decimal volumeUSD})
       : this.timeStamp = timeStamp,
         this.volumeUSD = volumeUSD,
         this.amount0In = amount0In,
@@ -42,13 +44,13 @@ class PairVolume {
 
   PairVolume.fromJson(Map<String, dynamic> json)
       : timeStamp = DateTime.parse(json['time']),
-        volumeUSD = double.parse(json['volumeUSD']),
-        amount0In = double.parse(json['amount0In']),
-        amount0Out = double.parse(json['amount0Out']),
-        price0USD = double.parse(json['price0USD']),
-        amount1In = double.parse(json['amount1In']),
-        amount1Out = double.parse(json['amount1Out']),
-        price1USD = double.parse(json['price1USD']),
+        volumeUSD = Decimal.parse(json['volumeUSD']),
+        amount0In = Decimal.parse(json['amount0In']),
+        amount0Out = Decimal.parse(json['amount0Out']),
+        price0USD = Decimal.parse(json['price0USD']),
+        amount1In = Decimal.parse(json['amount1In']),
+        amount1Out = Decimal.parse(json['amount1Out']),
+        price1USD = Decimal.parse(json['price1USD']),
         pair = json['pair'];
 
   Map<String, dynamic> toJson() => {

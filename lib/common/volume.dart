@@ -1,3 +1,5 @@
+import 'package:decimal/decimal.dart';
+
 class Volume {
   // "overTime": [
   //   {
@@ -10,18 +12,18 @@ class Volume {
   //   },
   DateTime timeStamp;
   String symbol;
-  double amountIn;
-  double amountOut;
-  double priceUSD;
-  double volumeUSD;
+  Decimal amountIn;
+  Decimal amountOut;
+  Decimal priceUSD;
+  Decimal volumeUSD;
 
   Volume(
       {DateTime timeStamp,
       String symbol,
-      double amountIn,
-      double amountOut,
-      double priceUSD,
-      double volumeUSD})
+      Decimal amountIn,
+      Decimal amountOut,
+      Decimal priceUSD,
+      Decimal volumeUSD})
       : this.timeStamp = timeStamp,
         this.volumeUSD = volumeUSD,
         this.amountIn = amountIn,
@@ -31,10 +33,10 @@ class Volume {
 
   Volume.fromJson(Map<String, dynamic> json)
       : timeStamp = DateTime.parse(json['Time']),
-        volumeUSD = double.parse(json['volumeUSD']),
-        amountIn = double.parse(json['amountIn']),
-        amountOut = double.parse(json['amountOut']),
-        priceUSD = double.parse(json['priceUSD']),
+        volumeUSD = Decimal.parse(json['volumeUSD']),
+        amountIn = Decimal.parse(json['amountIn']),
+        amountOut = Decimal.parse(json['amountOut']),
+        priceUSD = Decimal.parse(json['priceUSD']),
         symbol = json['Symbol'];
 
   Map<String, dynamic> toJson() => {

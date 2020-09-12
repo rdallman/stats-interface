@@ -17,7 +17,6 @@ class Api {
       throw err;
     }
     if (response.statusCode != 200) {
-      if (response.statusCode == 404) return Future.value(null);
       var e = ErrorResponse.parse(response);
       throw e;
     }
@@ -27,7 +26,6 @@ class Api {
       if (totals == null) return null;
       return List<Total>.from(totals.map((a) => Total.fromJson(a)));
     } catch (err) {
-      print("ERROR decoding json: $err");
       throw err;
     }
   }
@@ -42,7 +40,6 @@ class Api {
       throw err;
     }
     if (response.statusCode != 200) {
-      if (response.statusCode == 404) return Future.value(null);
       var e = ErrorResponse.parse(response);
       throw e;
     }
@@ -52,7 +49,6 @@ class Api {
       if (tokens == null) return null;
       return List<Token>.from(tokens.map((a) => Token.fromJson(a)));
     } catch (err) {
-      print("ERROR decoding json: $err");
       throw err;
     }
   }
@@ -67,7 +63,6 @@ class Api {
       throw err;
     }
     if (response.statusCode != 200) {
-      if (response.statusCode == 404) return Future.value(null);
       var e = ErrorResponse.parse(response);
       throw e;
     }
@@ -77,7 +72,6 @@ class Api {
       if (volume == null) return null;
       return List<Volume>.from(volume.map((a) => Volume.fromJson(a)));
     } catch (err) {
-      print("ERROR decoding json: $err");
       throw err;
     }
   }
@@ -92,7 +86,6 @@ class Api {
       throw err;
     }
     if (response.statusCode != 200) {
-      if (response.statusCode == 404) return Future.value(null);
       var e = ErrorResponse.parse(response);
       throw e;
     }
@@ -102,7 +95,6 @@ class Api {
       if (volume == null) return null;
       return List<PairVolume>.from(volume.map((a) => PairVolume.fromJson(a)));
     } catch (err) {
-      print("ERROR decoding json: $err");
       throw err;
     }
   }
@@ -114,13 +106,10 @@ class Api {
     try {
       response = await http.get(url);
     } catch (err) {
-      print("ERROR running http: $err");
       throw err;
     }
     if (response.statusCode != 200) {
-      if (response.statusCode == 404) return Future.value(null);
       var e = ErrorResponse.parse(response);
-      print("ERROR running query: $e");
       throw e;
     }
     try {
@@ -130,7 +119,6 @@ class Api {
       return List<PairLiquidity>.from(
           volume.map((a) => PairLiquidity.fromJson(a)));
     } catch (err) {
-      print("ERROR decoding json: $err");
       throw err;
     }
   }

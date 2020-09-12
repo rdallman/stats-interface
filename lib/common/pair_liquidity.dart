@@ -1,3 +1,5 @@
+import 'package:decimal/decimal.dart';
+
 class PairLiquidity {
   // "overTime": [
   //   {
@@ -14,22 +16,22 @@ class PairLiquidity {
   String pair;
   String token0;
   String token1;
-  double totalSupply;
-  double reserve0;
-  double reserve1;
-  double price0;
-  double price1;
+  Decimal totalSupply;
+  Decimal reserve0;
+  Decimal reserve1;
+  Decimal price0;
+  Decimal price1;
 
   PairLiquidity(
       {DateTime timeStamp,
       String pair,
       String token0,
       String token1,
-      double totalSupply,
-      double reserve0,
-      double reserve1,
-      double price0,
-      double price1})
+      Decimal totalSupply,
+      Decimal reserve0,
+      Decimal reserve1,
+      Decimal price0,
+      Decimal price1})
       : this.pair = pair,
         this.token0 = token0,
         this.token1 = token1,
@@ -43,11 +45,11 @@ class PairLiquidity {
       : timeStamp = DateTime.parse(json['time']),
         token0 = json['token0'],
         token1 = json['token1'],
-        totalSupply = double.parse(json['totalSupply']),
-        reserve0 = double.parse(json['reserve0']),
-        reserve1 = double.parse(json['reserve1']),
-        price0 = double.parse(json['price0']),
-        price1 = double.parse(json['price1']),
+        totalSupply = Decimal.parse(json['totalSupply']),
+        reserve0 = Decimal.parse(json['reserve0']),
+        reserve1 = Decimal.parse(json['reserve1']),
+        price0 = Decimal.parse(json['price0']),
+        price1 = Decimal.parse(json['price1']),
         pair = json['pair'];
 
   Map<String, dynamic> toJson() => {

@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:goswapinfo/common/api.dart';
 import 'package:goswapinfo/common/total.dart';
+import 'package:decimal/decimal.dart';
 
 class LiquidityChart extends StatefulWidget {
   @override
@@ -189,7 +190,7 @@ class LiquidityChartState extends State<LiquidityChart> {
       LineChartBarData(
         spots: List<FlSpot>.from(totals.data.map((a) => FlSpot(
             a.timeStamp.hour.toDouble(),
-            (a.volumeUSD / 1000).roundToDouble()))),
+            (a.volumeUSD / Decimal.fromInt(1000)).roundToDouble()))),
         isCurved: true,
         curveSmoothness: 0.1,
         colors: const [
