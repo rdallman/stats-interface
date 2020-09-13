@@ -1,6 +1,9 @@
-import 'package:fl_chart/fl_chart.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:goswapinfo/common/api.dart';
+import 'package:goswapinfo/common/styles.dart';
 import 'package:goswapinfo/common/total.dart';
 import 'package:decimal/decimal.dart';
 
@@ -59,77 +62,80 @@ class LiquidityChartState extends State<LiquidityChart> {
     return FutureBuilder<List<Total>>(
         future: totalsF,
         builder: (context, snapshot) {
-          return snapshot.hasData
-              ? AspectRatio(
-                  aspectRatio: 1.23,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: const [
-                          Color(0xff2c274c),
-                          Color(0xff46426c),
-                        ],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
+          if (snapshot.hasError) {
+            return Styles.errorText(snapshot.error.toString());
+          }
+          if (snapshot.hasData) {
+            return Center(
+              child: Center(
+                child: Container(
+                  // decoration: BoxDecoration(
+                  //   gradient: LinearGradient(
+                  //     colors: const [
+                  //       Color(0xff2c274c),
+                  //       Color(0xff46426c),
+                  //     ],
+                  //     begin: Alignment.bottomCenter,
+                  //     end: Alignment.topCenter,
+                  //   ),
+                  // ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 37,
                       ),
-                    ),
-                    child: Stack(
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            const SizedBox(
-                              height: 37,
-                            ),
-                            const Text(
-                              'Liquidity 2020',
-                              style: TextStyle(
-                                color: Color(0xff827daa),
-                                fontSize: 16,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            const Text(
-                              '\$782.78m',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 2),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(
-                              height: 37,
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 16.0, left: 6.0),
-                                child: LineChart(
-                                  sampleData(snapshot),
-                                  swapAnimationDuration:
-                                      const Duration(milliseconds: 250),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                          ],
+                      const Text(
+                        'Liquidity 2020',
+                        style: TextStyle(
+                          color: Color(0xff827daa),
+                          fontSize: 16,
                         ),
-                      ],
-                    ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      const Text(
+                        '\$782.78m',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 2),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 37,
+                      ),
+                      // Expanded(
+                      Padding(
+                        padding: const EdgeInsets.only(right: 16.0, left: 6.0),
+                        child: LineChart(
+                          sampleData(snapshot.data),
+                          swapAnimationDuration:
+                              const Duration(milliseconds: 250),
+                        ),
+                      ),
+                      // ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
                   ),
-                )
-              : Text('Loading...');
+                ),
+              ),
+            );
+          }
+          return Text('Loading...');
         });
   }
 
-  LineChartData sampleData(AsyncSnapshot<List<Total>> totals) {
+  LineChartData sampleData(List<Total> totals) {
+    int ycount = 0;
+    int xcount = 0;
     return LineChartData(
+      // extraLinesData: ExtraLinesData(horizontalLines: [HorizontalLine(y: 0)]),
       lineTouchData: LineTouchData(
         enabled: false,
       ),
@@ -139,29 +145,49 @@ class LiquidityChartState extends State<LiquidityChart> {
       titlesData: FlTitlesData(
         bottomTitles: SideTitles(
           showTitles: true,
+          checkToShowTitle: (double minValue, double maxValue,
+              SideTitles sideTitles, double appliedInterval, double value) {
+            xcount++;
+            if (xcount - 1 % 5 == 0) {
+              return true;
+            }
+            return true;
+          },
+          rotateAngle: 90,
           reservedSize: 22,
           textStyle: const TextStyle(
             color: Color(0xff72719b),
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
+            // fontWeight: FontWeight.bold,
+            fontSize: 12,
           ),
           margin: 10,
           getTitles: (value) {
-            return value.floor().toString();
+            print("title: $value");
+            var dt = DateTime.fromMillisecondsSinceEpoch(value.toInt());
+            return "${dt.month} ${dt.day}";
           },
         ),
         leftTitles: SideTitles(
           showTitles: true,
+          checkToShowTitle: (double minValue, double maxValue,
+              SideTitles sideTitles, double appliedInterval, double value) {
+            ycount++;
+            if (ycount - 1 % 10 == 0) {
+              return true;
+            }
+            return true;
+          },
           textStyle: const TextStyle(
             color: Color(0xff75729e),
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
+            // fontWeight: FontWeight.bold,
+            fontSize: 12,
           ),
           getTitles: (value) {
-            return value.floor().toString();
+            print("lefttitle: $value");
+            return value.round().toString();
           },
           margin: 8,
-          reservedSize: 30,
+          reservedSize: 60,
         ),
       ),
       borderData: FlBorderData(
@@ -185,21 +211,26 @@ class LiquidityChartState extends State<LiquidityChart> {
     );
   }
 
-  List<LineChartBarData> linesBarData(AsyncSnapshot<List<Total>> totals) {
+  List<LineChartBarData> linesBarData(List<Total> totals) {
+    var rand = new Random();
+    List<FlSpot> l = List<FlSpot>.from(totals.map((a) => FlSpot(
+        a.timeStamp.millisecondsSinceEpoch.toDouble(),
+        a.liquidityUSD.toDouble() +
+            (rand.nextDouble() *
+                100000)))); // TODO:: remove rand, just doing this to have some fluctuation
+    // l[0] = FlSpot(l[0].x, 0);
     return [
       LineChartBarData(
-        spots: List<FlSpot>.from(totals.data.map((a) => FlSpot(
-            a.timeStamp.hour.toDouble(),
-            (a.volumeUSD / Decimal.fromInt(1000)).roundToDouble()))),
+        spots: l,
         isCurved: true,
         curveSmoothness: 0.1,
         colors: const [
           Color(0x99aa4cfc),
         ],
-        barWidth: 4,
+        barWidth: 2,
         isStrokeCapRound: true,
         dotData: FlDotData(
-          show: false,
+          show: true,
         ),
         belowBarData: BarAreaData(show: true, colors: [
           const Color(0x33aa4cfc),
