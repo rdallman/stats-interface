@@ -4,10 +4,16 @@ import 'package:goswapinfo/common/volume.dart';
 import 'package:goswapinfo/common/pair_volume.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'pair.dart';
 import 'total.dart';
 
+const bool prod = const bool.fromEnvironment('dart.vm.product');
+
 class Api {
-  static final String apiUrl = 'https://goswap-stats-xcefncm5jq-uc.a.run.app';
+  static final String apiUrl = prod
+      ? 'https://goswap-stats-xcefncm5jq-uc.a.run.app'
+      : 'http://localhost:8080';
+
   static Future<List<Total>> fetchTotals() async {
     String url = apiUrl + '/totals';
     http.Response response;
@@ -31,7 +37,6 @@ class Api {
   }
 
   static Future<List<Token>> fetchTokens() async {
-    //https://goswap-stats-xcefncm5jq-uc.a.run.app/tokens
     String url = apiUrl + '/tokens';
     http.Response response;
     try {
@@ -53,8 +58,30 @@ class Api {
     }
   }
 
+  static Future<List<Pair>> fetchPairs() async {
+    String url = apiUrl + '/pairs';
+    http.Response response;
+    try {
+      response = await http.get(url);
+    } catch (err) {
+      throw err;
+    }
+    if (response.statusCode != 200) {
+      var e = ErrorResponse.parse(response);
+      throw e;
+    }
+    try {
+      final jsonmap = json.decode(response.body);
+      print("jsonmap: $jsonmap");
+      final tokens = jsonmap['pairs'];
+      if (tokens == null) return null;
+      return List<Pair>.from(tokens.map((a) => Pair.fromJson(a)));
+    } catch (err) {
+      throw err;
+    }
+  }
+
   static Future<List<Volume>> fetchVolume(String token) async {
-    //https://goswap-stats-xcefncm5jq-uc.a.run.app/tokens/WGO/volume
     String url = apiUrl + '/tokens/' + token + '/volume';
     http.Response response;
     try {
@@ -77,7 +104,6 @@ class Api {
   }
 
   static Future<List<PairVolume>> fetchPairVolume(String pair) async {
-//https://goswap-stats-xcefncm5jq-uc.a.run.app/pairs/FAST-WGO/volume
     String url = apiUrl + '/pairs/' + pair + '/volume';
     http.Response response;
     try {
@@ -100,7 +126,6 @@ class Api {
   }
 
   static Future<List<PairLiquidity>> fetchPairLiquidity(String pair) async {
-//https://goswap-stats-xcefncm5jq-uc.a.run.app/pairs/FAST-WGO/liquidity
     String url = apiUrl + '/pairs/' + pair + '/liquidity';
     http.Response response;
     try {

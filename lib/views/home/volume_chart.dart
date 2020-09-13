@@ -156,8 +156,7 @@ class _VolumeChartState extends State<VolumeChart> {
           showTitles: true,
           checkToShowTitle: (double minValue, double maxValue,
               SideTitles sideTitles, double appliedInterval, double value) {
-            print(
-                "BOTTOM min: $minValue, max: $maxValue, applied: $appliedInterval, value: $value");
+            // print("BOTTOM min: $minValue, max: $maxValue, applied: $appliedInterval, value: $value");
             xcount++;
             if ((xcount - 1) % 10 == 0) {
               return true;
@@ -182,8 +181,7 @@ class _VolumeChartState extends State<VolumeChart> {
           showTitles: true,
           checkToShowTitle: (double minValue, double maxValue,
               SideTitles sideTitles, double appliedInterval, double value) {
-            print(
-                "LEFT min: $minValue, max: $maxValue, applied: $appliedInterval, value: $value");
+            // print("LEFT min: $minValue, max: $maxValue, applied: $appliedInterval, value: $value");
             ycount++;
             if ((ycount - 1) % (10) == 0) {
               return true;
@@ -196,7 +194,7 @@ class _VolumeChartState extends State<VolumeChart> {
             fontSize: 12,
           ),
           getTitles: (value) {
-            print("lefttitle: $value");
+            // print("lefttitle: $value");
             return nf.format(value.round());
           },
           margin: 8,
