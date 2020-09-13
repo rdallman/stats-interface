@@ -1,5 +1,11 @@
-import 'package:fl_chart/fl_chart.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:goswapinfo/common/api.dart';
+import 'package:goswapinfo/common/styles.dart';
+import 'package:goswapinfo/common/total.dart';
+import 'package:decimal/decimal.dart';
 
 class LiquidityChart extends StatefulWidget {
   @override
@@ -8,81 +14,128 @@ class LiquidityChart extends StatefulWidget {
 
 class LiquidityChartState extends State<LiquidityChart> {
   bool isShowingMainData;
+  Future<List<Total>> totalsF;
 
   @override
   void initState() {
     super.initState();
+    totalsF = Api.fetchTotals();
     isShowingMainData = false;
+    // Api.fetchPairLiquidity('FAST-WGO').then((value) {
+    //   for (var e in value) {
+    //     print(e);
+    //     print(e.toJson());
+    //   }
+    // }, onError: (e) {
+    //   print(e);
+    // });
+    // Api.fetchPairVolume('FAST-WGO').then((value) {
+    //   for (var e in value) {
+    //     print(e);
+    //     print(e.toJson());
+    //   }
+    // }, onError: (e) {
+    //   print(e);
+    // });
+    // Api.fetchTokens().then((value) {
+    //   print("tokens");
+    //   for (var e in value) {
+    //     print(e);
+    //     print(e.toJson());
+    //   }
+    // }, onError: (e) {
+    //   print(e);
+    // });
+    // Api.fetchVolume('WGO').then((value) {
+    //   print("token volume");
+    //   for (var e in value) {
+    //     print(e);
+    //     print(e.toJson());
+    //   }
+    // }, onError: (e) {
+    //   print(e);
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.23,
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: const [
-              Color(0xff2c274c),
-              Color(0xff46426c),
-            ],
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-          ),
-        ),
-        child: Stack(
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                const SizedBox(
-                  height: 37,
-                ),
-                const Text(
-                  'Liquidity 2020',
-                  style: TextStyle(
-                    color: Color(0xff827daa),
-                    fontSize: 16,
+    return FutureBuilder<List<Total>>(
+        future: totalsF,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Styles.errorText(snapshot.error.toString());
+          }
+          if (snapshot.hasData) {
+            return Center(
+              child: Center(
+                child: Container(
+                  // decoration: BoxDecoration(
+                  //   gradient: LinearGradient(
+                  //     colors: const [
+                  //       Color(0xff2c274c),
+                  //       Color(0xff46426c),
+                  //     ],
+                  //     begin: Alignment.bottomCenter,
+                  //     end: Alignment.topCenter,
+                  //   ),
+                  // ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 37,
+                      ),
+                      const Text(
+                        'Liquidity 2020',
+                        style: TextStyle(
+                          color: Color(0xff827daa),
+                          fontSize: 16,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      const Text(
+                        '\$782.78m',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 2),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 37,
+                      ),
+                      // Expanded(
+                      Padding(
+                        padding: const EdgeInsets.only(right: 16.0, left: 6.0),
+                        child: LineChart(
+                          sampleData(snapshot.data),
+                          swapAnimationDuration:
+                              const Duration(milliseconds: 250),
+                        ),
+                      ),
+                      // ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
                   ),
-                  textAlign: TextAlign.center,
                 ),
-                const SizedBox(
-                  height: 4,
-                ),
-                const Text(
-                  '\$782.78m',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(
-                  height: 37,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 16.0, left: 6.0),
-                    child: LineChart(
-                      sampleData(),
-                      swapAnimationDuration: const Duration(milliseconds: 250),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+              ),
+            );
+          }
+          return Text('Loading...');
+        });
   }
 
-  LineChartData sampleData() {
+  LineChartData sampleData(List<Total> totals) {
+    int ycount = 0;
+    int xcount = 0;
     return LineChartData(
+      // extraLinesData: ExtraLinesData(horizontalLines: [HorizontalLine(y: 0)]),
       lineTouchData: LineTouchData(
         enabled: false,
       ),
@@ -92,49 +145,49 @@ class LiquidityChartState extends State<LiquidityChart> {
       titlesData: FlTitlesData(
         bottomTitles: SideTitles(
           showTitles: true,
+          checkToShowTitle: (double minValue, double maxValue,
+              SideTitles sideTitles, double appliedInterval, double value) {
+            xcount++;
+            if (xcount - 1 % 5 == 0) {
+              return true;
+            }
+            return true;
+          },
+          rotateAngle: 90,
           reservedSize: 22,
           textStyle: const TextStyle(
             color: Color(0xff72719b),
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
+            // fontWeight: FontWeight.bold,
+            fontSize: 12,
           ),
           margin: 10,
           getTitles: (value) {
-            switch (value.toInt()) {
-              case 2:
-                return 'SEPT';
-              case 7:
-                return 'OCT';
-              case 12:
-                return 'DEC';
-            }
-            return '';
+            print("title: $value");
+            var dt = DateTime.fromMillisecondsSinceEpoch(value.toInt());
+            return "${dt.month} ${dt.day}";
           },
         ),
         leftTitles: SideTitles(
           showTitles: true,
+          checkToShowTitle: (double minValue, double maxValue,
+              SideTitles sideTitles, double appliedInterval, double value) {
+            ycount++;
+            if (ycount - 1 % 10 == 0) {
+              return true;
+            }
+            return true;
+          },
           textStyle: const TextStyle(
             color: Color(0xff75729e),
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
+            // fontWeight: FontWeight.bold,
+            fontSize: 12,
           ),
           getTitles: (value) {
-            switch (value.toInt()) {
-              case 1:
-                return '1m';
-              case 2:
-                return '2m';
-              case 3:
-                return '3m';
-              case 4:
-                return '5m';
-              case 5:
-                return '6m';
-            }
-            return '';
+            print("lefttitle: $value");
+            return value.round().toString();
           },
           margin: 8,
-          reservedSize: 30,
+          reservedSize: 60,
         ),
       ),
       borderData: FlBorderData(
@@ -154,34 +207,30 @@ class LiquidityChartState extends State<LiquidityChart> {
               color: Colors.transparent,
             ),
           )),
-      minX: 0,
-      maxX: 14,
-      maxY: 6,
-      minY: 0,
-      lineBarsData: linesBarData(),
+      lineBarsData: linesBarData(totals),
     );
   }
 
-  List<LineChartBarData> linesBarData() {
+  List<LineChartBarData> linesBarData(List<Total> totals) {
+    var rand = new Random();
+    List<FlSpot> l = List<FlSpot>.from(totals.map((a) => FlSpot(
+        a.timeStamp.millisecondsSinceEpoch.toDouble(),
+        a.liquidityUSD.toDouble() +
+            (rand.nextDouble() *
+                100000)))); // TODO:: remove rand, just doing this to have some fluctuation
+    // l[0] = FlSpot(l[0].x, 0);
     return [
       LineChartBarData(
-        spots: [
-          FlSpot(1, 1),
-          FlSpot(3, 2.8),
-          FlSpot(7, 1.2),
-          FlSpot(10, 2.8),
-          FlSpot(12, 2.6),
-          FlSpot(13, 3.9),
-        ],
+        spots: l,
         isCurved: true,
         curveSmoothness: 0.1,
         colors: const [
           Color(0x99aa4cfc),
         ],
-        barWidth: 4,
+        barWidth: 2,
         isStrokeCapRound: true,
         dotData: FlDotData(
-          show: false,
+          show: true,
         ),
         belowBarData: BarAreaData(show: true, colors: [
           const Color(0x33aa4cfc),
