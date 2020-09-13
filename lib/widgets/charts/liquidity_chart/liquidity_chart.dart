@@ -6,6 +6,7 @@ import 'package:goswapinfo/common/api.dart';
 import 'package:goswapinfo/common/styles.dart';
 import 'package:goswapinfo/common/total.dart';
 import 'package:decimal/decimal.dart';
+import 'package:intl/intl.dart';
 
 class LiquidityChart extends StatefulWidget {
   @override
@@ -15,6 +16,8 @@ class LiquidityChart extends StatefulWidget {
 class LiquidityChartState extends State<LiquidityChart> {
   bool isShowingMainData;
   Future<List<Total>> totalsF;
+
+  var nf = NumberFormat.compactCurrency(locale: "en_US", symbol: "\$");
 
   @override
   void initState() {
@@ -66,6 +69,8 @@ class LiquidityChartState extends State<LiquidityChart> {
             return Styles.errorText(snapshot.error.toString());
           }
           if (snapshot.hasData) {
+            var data = snapshot.data;
+            // TODO: if len 0, show something else
             return Center(
               child: Center(
                 child: Container(
@@ -96,8 +101,9 @@ class LiquidityChartState extends State<LiquidityChart> {
                       const SizedBox(
                         height: 4,
                       ),
-                      const Text(
-                        '\$782.78m',
+                      Text(
+                        nf.format(
+                            data[data.length - 1].liquidityUSD.toDouble()),
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 32,
@@ -147,11 +153,13 @@ class LiquidityChartState extends State<LiquidityChart> {
           showTitles: true,
           checkToShowTitle: (double minValue, double maxValue,
               SideTitles sideTitles, double appliedInterval, double value) {
+            print(
+                "BOTTOM min: $minValue, max: $maxValue, applied: $appliedInterval, value: $value");
             xcount++;
-            if (xcount - 1 % 5 == 0) {
+            if ((xcount - 1) % 10 == 0) {
               return true;
             }
-            return true;
+            return false;
           },
           rotateAngle: 90,
           reservedSize: 22,
@@ -164,18 +172,20 @@ class LiquidityChartState extends State<LiquidityChart> {
           getTitles: (value) {
             print("title: $value");
             var dt = DateTime.fromMillisecondsSinceEpoch(value.toInt());
-            return "${dt.month} ${dt.day}";
+            return "${dt.day} ${dt.hour}";
           },
         ),
         leftTitles: SideTitles(
           showTitles: true,
           checkToShowTitle: (double minValue, double maxValue,
               SideTitles sideTitles, double appliedInterval, double value) {
+            print(
+                "LEFT min: $minValue, max: $maxValue, applied: $appliedInterval, value: $value");
             ycount++;
-            if (ycount - 1 % 10 == 0) {
+            if ((ycount - 1) % (10) == 0) {
               return true;
             }
-            return true;
+            return false;
           },
           textStyle: const TextStyle(
             color: Color(0xff75729e),
@@ -184,7 +194,7 @@ class LiquidityChartState extends State<LiquidityChart> {
           ),
           getTitles: (value) {
             print("lefttitle: $value");
-            return value.round().toString();
+            return nf.format(value.round());
           },
           margin: 8,
           reservedSize: 60,

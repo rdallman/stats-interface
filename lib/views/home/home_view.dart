@@ -41,13 +41,17 @@ class HomeView extends StatelessWidget {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Flexible(child: LiquidityChart()),
+                        Expanded(child: LiquidityChart()),
+                        SizedBox(width: 20),
                         // Expanded(
                         // child:
                         // AnalyticsDetails(),
                         // ),
-                        VolumeChart(),
+                        Expanded(child: VolumeChart()),
                       ]),
+                  const SizedBox(
+                    height: 37,
+                  ),
                   TopTokens(),
                   TopPairs(),
                 ],
