@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:goswapinfo/common/api.dart';
+import 'package:goswapinfo/common/styles.dart';
+import 'package:goswapinfo/common/token.dart';
 
 class TopTokens extends StatefulWidget {
   @override
@@ -6,8 +9,13 @@ class TopTokens extends StatefulWidget {
 }
 
 class _TopTokensState extends State<TopTokens> {
-  bool _isFavorited = true;
-  int _favoriteCount = 41;
+  Future<List<Token>> pairsF;
+
+  @override
+  initState() {
+    super.initState();
+    pairsF = Api.fetchTokens();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +33,58 @@ class _TopTokensState extends State<TopTokens> {
         const SizedBox(
           height: 37,
         ),
-        Text(
-          "CHART HERE",
-        )
+        FutureBuilder<List<Token>>(
+            future: pairsF, // a previously-obtained Future<String> or null
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Token>> snapshot) {
+              // print(snapshot);
+              // print(snapshot.data);
+              if (snapshot.hasError) {
+                return Styles.errorText(snapshot.error.toString());
+              }
+              if (snapshot.hasData) {
+                print("DATA: ${snapshot.data}");
+                return table(context, snapshot.data);
+              }
+              return Styles.waiting();
+            }),
       ],
+    );
+  }
+
+  Widget table(BuildContext context, List<Token> tokens) {
+    List<DataRow> rows = [];
+    for (final p in tokens) {
+      rows.add(DataRow(
+        cells: <DataCell>[
+          DataCell(Text(p.toString())),
+          DataCell(Text('123')),
+          DataCell(Text('456')),
+        ],
+      ));
+    }
+    return DataTable(
+      columns: const <DataColumn>[
+        DataColumn(
+          label: Text(
+            'Name',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            'Liquidity',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            'Volume',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+        ),
+      ],
+      rows: rows,
     );
   }
 }

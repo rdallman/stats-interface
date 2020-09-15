@@ -91,7 +91,7 @@ class LiquidityChartState extends State<LiquidityChart> {
                         height: 37,
                       ),
                       const Text(
-                        'Liquidity 2020',
+                        'Liquidity',
                         style: TextStyle(
                           color: Color(0xff827daa),
                           fontSize: 16,

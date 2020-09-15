@@ -1,6 +1,6 @@
 import 'package:decimal/decimal.dart';
 
-class PairVolume {
+class PairBucket {
   // "overTime": [
   //   {
   //     "time": "2020-09-10T18:00:00Z",
@@ -22,7 +22,11 @@ class PairVolume {
   Decimal price1USD;
   Decimal volumeUSD;
 
-  PairVolume(
+  Decimal totalSupply;
+  Decimal reserve0;
+  Decimal reserve1;
+
+  PairBucket(
       {DateTime timeStamp,
       String pair,
       Decimal amount0In,
@@ -31,7 +35,10 @@ class PairVolume {
       Decimal amount1In,
       Decimal amount1Out,
       Decimal price1USD,
-      Decimal volumeUSD})
+      Decimal volumeUSD,
+      this.totalSupply,
+      this.reserve0,
+      this.reserve1})
       : this.timeStamp = timeStamp,
         this.volumeUSD = volumeUSD,
         this.amount0In = amount0In,
@@ -42,8 +49,9 @@ class PairVolume {
         this.price1USD = price1USD,
         this.pair = pair;
 
-  PairVolume.fromJson(Map<String, dynamic> json)
+  PairBucket.fromJson(Map<String, dynamic> json)
       : timeStamp = DateTime.parse(json['time']),
+        pair = json['pair'],
         volumeUSD = Decimal.parse(json['volumeUSD']),
         amount0In = Decimal.parse(json['amount0In']),
         amount0Out = Decimal.parse(json['amount0Out']),
@@ -51,7 +59,9 @@ class PairVolume {
         amount1In = Decimal.parse(json['amount1In']),
         amount1Out = Decimal.parse(json['amount1Out']),
         price1USD = Decimal.parse(json['price1USD']),
-        pair = json['pair'];
+        totalSupply = Decimal.parse(json['totalSupply']),
+        reserve0 = Decimal.parse(json['reserve0']),
+        reserve1 = Decimal.parse(json['reserve1']);
 
   Map<String, dynamic> toJson() => {
         'time': timeStamp,
@@ -62,6 +72,9 @@ class PairVolume {
         'amount1In': amount1In,
         'amount1Out': amount1Out,
         'price1USD': price1USD,
-        'pair': pair
+        'pair': pair,
+        'totalSupply': totalSupply,
+        'reserve0': reserve0,
+        'reserve1': reserve1,
       };
 }

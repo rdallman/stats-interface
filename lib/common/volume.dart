@@ -1,6 +1,6 @@
 import 'package:decimal/decimal.dart';
 
-class Volume {
+class TokenBucket {
   // "overTime": [
   //   {
   //     "Time": "2020-09-10T18:00:00Z",
@@ -17,7 +17,7 @@ class Volume {
   Decimal priceUSD;
   Decimal volumeUSD;
 
-  Volume(
+  TokenBucket(
       {DateTime timeStamp,
       String symbol,
       Decimal amountIn,
@@ -31,7 +31,7 @@ class Volume {
         this.priceUSD = priceUSD,
         this.symbol = symbol;
 
-  Volume.fromJson(Map<String, dynamic> json)
+  TokenBucket.fromJson(Map<String, dynamic> json)
       : timeStamp = DateTime.parse(json['Time']),
         volumeUSD = Decimal.parse(json['volumeUSD']),
         amountIn = Decimal.parse(json['amountIn']),

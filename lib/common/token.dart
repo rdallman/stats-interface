@@ -46,4 +46,8 @@ class Token {
         'totalSupply': totalSupply,
         'CMCPrice': cMCPrice,
       };
+
+  String toString() {
+    return "${symbol}";
+  }
 }

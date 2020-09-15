@@ -172,7 +172,7 @@ class _VolumeChartState extends State<VolumeChart> {
           ),
           margin: 10,
           getTitles: (value) {
-            print("title: $value");
+            // print("title: $value");
             var dt = DateTime.fromMillisecondsSinceEpoch(value.toInt());
             return "${dt.day} ${dt.hour}";
           },

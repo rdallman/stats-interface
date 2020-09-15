@@ -28,6 +28,7 @@ dependencies:
   http:
   decimal: ^0.3.0
   intl: 
+  url_launcher: ^5.5.3
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -42,7 +43,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
-flutter:
+flutter: 
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
