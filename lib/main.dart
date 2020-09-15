@@ -21,8 +21,9 @@ class MyApp extends StatelessWidget {
         ),
         // scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
-          brightness: Brightness.dark,
-          // color: Colors.white,
+          // brightness: Brightness.dark,
+          // color: Color(0xff2c274c),
+          color: Color(0xff46426c),
         ),
       ),
       home: HomeView(),

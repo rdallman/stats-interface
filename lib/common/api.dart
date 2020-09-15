@@ -50,10 +50,17 @@ class Api {
     }
     try {
       final jsonmap = json.decode(response.body);
+      print("jsonmap: $jsonmap");
       final tokens = jsonmap['tokens'];
       if (tokens == null) return null;
-      return List<Token>.from(tokens.map((a) => Token.fromJson(a)));
-    } catch (err) {
+      return List<Token>.from(tokens.map((a) {
+        var t = Token.fromJson(a);
+        t.stats = TokenBucket.fromJson(jsonmap['stats'][t.address]);
+        return t;
+      }));
+    } catch (err, stack) {
+      print(err);
+      print(stack);
       throw err;
     }
   }
@@ -74,9 +81,20 @@ class Api {
       final jsonmap = json.decode(response.body);
       print("jsonmap: $jsonmap");
       final tokens = jsonmap['pairs'];
+      final stats = jsonmap['stats'];
+      print("STATS XXX: $stats");
       if (tokens == null) return null;
-      return List<Pair>.from(tokens.map((a) => Pair.fromJson(a)));
-    } catch (err) {
+      return List<Pair>.from(tokens.map((a) {
+        var p = Pair.fromJson(a);
+        print("ADDRESS: ${p.address}");
+        var s = stats[p.address];
+        print("STATS: $s");
+        p.stats = PairBucket.fromJson(s);
+        return p;
+      }));
+    } catch (err, stack) {
+      print(err);
+      print(stack);
       throw err;
     }
   }

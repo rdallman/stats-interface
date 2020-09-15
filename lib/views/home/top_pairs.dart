@@ -75,8 +75,10 @@ class _TopPairsState extends State<TopPairs> {
             },
           )),
           // LINK:
+          DataCell(Text(' ABC')),
+          // '${Globals.usdFormatCompact.format(p.stats.liquidityUSD.toDouble())}')),
           DataCell(Text('123')),
-          DataCell(Text('456')),
+          // '${Globals.usdFormatCompact.format(p.stats.volumeUSD.toDouble())}')),
         ],
       ));
     }
@@ -96,7 +98,7 @@ class _TopPairsState extends State<TopPairs> {
         ),
         DataColumn(
           label: Text(
-            'Volume',
+            'Volume (24hr)',
             style: TextStyle(fontStyle: FontStyle.italic),
           ),
         ),

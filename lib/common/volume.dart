@@ -1,5 +1,7 @@
 import 'package:decimal/decimal.dart';
 
+import 'globals.dart';
+
 class TokenBucket {
   // "overTime": [
   //   {
@@ -32,19 +34,19 @@ class TokenBucket {
         this.symbol = symbol;
 
   TokenBucket.fromJson(Map<String, dynamic> json)
-      : timeStamp = DateTime.parse(json['Time']),
-        volumeUSD = Decimal.parse(json['volumeUSD']),
-        amountIn = Decimal.parse(json['amountIn']),
-        amountOut = Decimal.parse(json['amountOut']),
-        priceUSD = Decimal.parse(json['priceUSD']),
-        symbol = json['Symbol'];
+      : timeStamp = json['time'] != null ? DateTime.parse(json['time']) : null,
+        volumeUSD = Globals.toDec(json['volumeUSD']),
+        amountIn = Globals.toDec(json['amountIn']),
+        amountOut = Globals.toDec(json['amountOut']),
+        priceUSD = Globals.toDec(json['priceUSD']),
+        symbol = json['symbol'];
 
   Map<String, dynamic> toJson() => {
-        'Time': timeStamp,
+        'time': timeStamp,
         'volumeUSD': volumeUSD,
         'amountIn': amountIn,
         'amountOut': amountOut,
         'priceUSD': priceUSD,
-        'Symbol': symbol
+        'symbol': symbol
       };
 }

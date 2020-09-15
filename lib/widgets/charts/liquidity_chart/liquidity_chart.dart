@@ -117,10 +117,13 @@ class LiquidityChartState extends State<LiquidityChart> {
                       // Expanded(
                       Padding(
                         padding: const EdgeInsets.only(right: 16.0, left: 6.0),
-                        child: LineChart(
-                          sampleData(snapshot.data),
-                          swapAnimationDuration:
-                              const Duration(milliseconds: 250),
+                        child: Container(
+                          height: 400,
+                          child: LineChart(
+                            sampleData(snapshot.data),
+                            swapAnimationDuration:
+                                const Duration(milliseconds: 250),
+                          ),
                         ),
                       ),
                       // ),

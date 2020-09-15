@@ -1,5 +1,7 @@
 import 'package:decimal/decimal.dart';
 
+import 'volume.dart';
+
 class Token {
   // "tokens": [
   //   {
@@ -15,6 +17,8 @@ class Token {
   int decimals;
   Decimal totalSupply;
   Decimal cMCPrice;
+
+  TokenBucket stats;
 
   Token(
       {String address,

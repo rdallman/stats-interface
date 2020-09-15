@@ -13,7 +13,8 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: SizedBox(height: 30, child: Image.asset('assets/logo.png')),
+        title:
+            SizedBox(height: 30, child: Image.asset('assets/logo-white.png')),
         // title: const Text('GoSwap Stats'),
         actions: <Widget>[
           // IconButton(
@@ -57,17 +58,20 @@ class HomeView extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   // NavigationBar(),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(child: LiquidityChart()),
-                        SizedBox(width: 50),
-                        // Expanded(
-                        // child:
-                        // AnalyticsDetails(),
-                        // ),
-                        Expanded(child: VolumeChart()),
-                      ]),
+                  Container(
+                    // constraints: BoxConstraints(maxHeight: 300),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(child: LiquidityChart()),
+                          SizedBox(width: 50),
+                          // Expanded(
+                          // child:
+                          // AnalyticsDetails(),
+                          // ),
+                          Expanded(child: VolumeChart()),
+                        ]),
+                  ),
                   const SizedBox(
                     height: 37,
                   ),

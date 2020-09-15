@@ -1,5 +1,7 @@
 import 'package:decimal/decimal.dart';
 
+import 'globals.dart';
+
 class PairBucket {
   // "overTime": [
   //   {
@@ -25,6 +27,7 @@ class PairBucket {
   Decimal totalSupply;
   Decimal reserve0;
   Decimal reserve1;
+  Decimal liquidityUSD;
 
   PairBucket(
       {DateTime timeStamp,
@@ -38,7 +41,8 @@ class PairBucket {
       Decimal volumeUSD,
       this.totalSupply,
       this.reserve0,
-      this.reserve1})
+      this.reserve1,
+      this.liquidityUSD})
       : this.timeStamp = timeStamp,
         this.volumeUSD = volumeUSD,
         this.amount0In = amount0In,
@@ -50,18 +54,19 @@ class PairBucket {
         this.pair = pair;
 
   PairBucket.fromJson(Map<String, dynamic> json)
-      : timeStamp = DateTime.parse(json['time']),
+      : timeStamp = json['time'] != null ? DateTime.parse(json['time']) : null,
         pair = json['pair'],
-        volumeUSD = Decimal.parse(json['volumeUSD']),
-        amount0In = Decimal.parse(json['amount0In']),
-        amount0Out = Decimal.parse(json['amount0Out']),
-        price0USD = Decimal.parse(json['price0USD']),
-        amount1In = Decimal.parse(json['amount1In']),
-        amount1Out = Decimal.parse(json['amount1Out']),
-        price1USD = Decimal.parse(json['price1USD']),
-        totalSupply = Decimal.parse(json['totalSupply']),
-        reserve0 = Decimal.parse(json['reserve0']),
-        reserve1 = Decimal.parse(json['reserve1']);
+        volumeUSD = Globals.toDec(json['volumeUSD']),
+        amount0In = Globals.toDec(json['amount0In']),
+        amount0Out = Globals.toDec(json['amount0Out']),
+        price0USD = Globals.toDec(json['price0USD']),
+        amount1In = Globals.toDec(json['amount1In']),
+        amount1Out = Globals.toDec(json['amount1Out']),
+        price1USD = Globals.toDec(json['price1USD']),
+        totalSupply = Globals.toDec(json['totalSupply']),
+        reserve0 = Globals.toDec(json['reserve0']),
+        reserve1 = Globals.toDec(json['reserve1']),
+        liquidityUSD = Globals.toDec(json['liquidityUSD']);
 
   Map<String, dynamic> toJson() => {
         'time': timeStamp,
