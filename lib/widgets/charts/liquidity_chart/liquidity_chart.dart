@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:goswapinfo/common/api.dart';
+import 'package:goswapinfo/common/globals.dart';
 import 'package:goswapinfo/common/styles.dart';
 import 'package:goswapinfo/common/total.dart';
 import 'package:decimal/decimal.dart';
@@ -174,7 +175,7 @@ class LiquidityChartState extends State<LiquidityChart> {
           getTitles: (value) {
             // print("title: $value");
             var dt = DateTime.fromMillisecondsSinceEpoch(value.toInt());
-            return "${dt.day} ${dt.hour}";
+            return "${Globals.mdFormat.format(dt)}";
           },
         ),
         leftTitles: SideTitles(

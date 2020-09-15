@@ -19,4 +19,6 @@ class Globals {
     }
     return usdFormat.format(d.toDouble());
   }
+
+  static DateFormat mdFormat = DateFormat('MMM d');
 }
