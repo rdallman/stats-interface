@@ -1,5 +1,6 @@
 import 'package:decimal/decimal.dart';
 
+import 'pair_volume.dart';
 import 'token.dart';
 
 class Pair {
@@ -10,6 +11,8 @@ class Pair {
   Token token1;
 
   Decimal totalSupply;
+
+  PairBucket stats;
 
   Pair({
     this.index,

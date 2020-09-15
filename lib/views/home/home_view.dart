@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:goswapinfo/widgets/charts/liquidity_chart/liquidity_chart.dart';
-import 'package:goswapinfo/widgets/navigation_bar/navigation_bar.dart';
 
 import 'top_pairs.dart';
 import 'top_tokens.dart';
@@ -13,6 +12,27 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        title:
+            SizedBox(height: 30, child: Image.asset('assets/logo-white.png')),
+        // title: const Text('GoSwap Stats'),
+        actions: <Widget>[
+          // IconButton(
+          //   icon: const Icon(Icons.add_alert),
+          //   tooltip: 'Show Snackbar',
+          //   onPressed: () {
+          //     scaffoldKey.currentState.showSnackBar(snackBar);
+          //   },
+          // ),
+          // IconButton(
+          //   icon: const Icon(Icons.navigate_next),
+          //   tooltip: 'Next page',
+          //   onPressed: () {
+          //     openPage(context);
+          //   },
+          // ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Container(
           decoration: BoxDecoration(
@@ -27,9 +47,9 @@ class HomeView extends StatelessWidget {
           ),
           child: Center(
             child: Container(
-              // padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 60),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               // alignment: Alignment.topCenter,
-              constraints: BoxConstraints(maxWidth: 1200),
+              // constraints: BoxConstraints(maxWidth: 1200),
               // child: ConstrainedBox(
               // constraints: BoxConstraints(maxWidth: 1200),
               // child: child,
@@ -37,23 +57,29 @@ class HomeView extends StatelessWidget {
 
               child: Column(
                 children: <Widget>[
-                  NavigationBar(),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(child: LiquidityChart()),
-                        SizedBox(width: 20),
-                        // Expanded(
-                        // child:
-                        // AnalyticsDetails(),
-                        // ),
-                        Expanded(child: VolumeChart()),
-                      ]),
+                  // NavigationBar(),
+                  Container(
+                    // constraints: BoxConstraints(maxHeight: 300),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(child: LiquidityChart()),
+                          SizedBox(width: 50),
+                          // Expanded(
+                          // child:
+                          // AnalyticsDetails(),
+                          // ),
+                          Expanded(child: VolumeChart()),
+                        ]),
+                  ),
+                  const SizedBox(
+                    height: 37,
+                  ),
+                  TopPairs(),
                   const SizedBox(
                     height: 37,
                   ),
                   TopTokens(),
-                  TopPairs(),
                 ],
               ),
             ),

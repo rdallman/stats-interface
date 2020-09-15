@@ -50,10 +50,17 @@ class Api {
     }
     try {
       final jsonmap = json.decode(response.body);
+      print("jsonmap: $jsonmap");
       final tokens = jsonmap['tokens'];
       if (tokens == null) return null;
-      return List<Token>.from(tokens.map((a) => Token.fromJson(a)));
-    } catch (err) {
+      return List<Token>.from(tokens.map((a) {
+        var t = Token.fromJson(a);
+        t.stats = TokenBucket.fromJson(jsonmap['stats'][t.address]);
+        return t;
+      }));
+    } catch (err, stack) {
+      print(err);
+      print(stack);
       throw err;
     }
   }
@@ -74,15 +81,26 @@ class Api {
       final jsonmap = json.decode(response.body);
       print("jsonmap: $jsonmap");
       final tokens = jsonmap['pairs'];
+      final stats = jsonmap['stats'];
+      print("STATS XXX: $stats");
       if (tokens == null) return null;
-      return List<Pair>.from(tokens.map((a) => Pair.fromJson(a)));
-    } catch (err) {
+      return List<Pair>.from(tokens.map((a) {
+        var p = Pair.fromJson(a);
+        print("ADDRESS: ${p.address}");
+        var s = stats[p.address];
+        print("STATS: $s");
+        p.stats = PairBucket.fromJson(s);
+        return p;
+      }));
+    } catch (err, stack) {
+      print(err);
+      print(stack);
       throw err;
     }
   }
 
-  static Future<List<Volume>> fetchVolume(String token) async {
-    String url = apiUrl + '/tokens/' + token + '/volume';
+  static Future<List<TokenBucket>> fetchTokenBuckets(String token) async {
+    String url = apiUrl + '/tokens/' + token + '/buckets';
     http.Response response;
     try {
       response = await http.get(url);
@@ -95,16 +113,38 @@ class Api {
     }
     try {
       final jsonmap = json.decode(response.body);
-      final volume = jsonmap['overTime'];
+      final volume = jsonmap['buckets'];
       if (volume == null) return null;
-      return List<Volume>.from(volume.map((a) => Volume.fromJson(a)));
+      return List<TokenBucket>.from(volume.map((a) => TokenBucket.fromJson(a)));
     } catch (err) {
       throw err;
     }
   }
 
-  static Future<List<PairVolume>> fetchPairVolume(String pair) async {
-    String url = apiUrl + '/pairs/' + pair + '/volume';
+  // static Future<List<PairVolume>> fetchPairVolume(String pair) async {
+  //   String url = apiUrl + '/pairs/' + pair + '/volume';
+  //   http.Response response;
+  //   try {
+  //     response = await http.get(url);
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  //   if (response.statusCode != 200) {
+  //     var e = ErrorResponse.parse(response);
+  //     throw e;
+  //   }
+  //   try {
+  //     final jsonmap = json.decode(response.body);
+  //     final volume = jsonmap['overTime'];
+  //     if (volume == null) return null;
+  //     return List<PairVolume>.from(volume.map((a) => PairVolume.fromJson(a)));
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // }
+
+  static Future<List<PairBucket>> fetchPairBuckets(String pair) async {
+    String url = apiUrl + '/pairs/' + pair + '/buckets';
     http.Response response;
     try {
       response = await http.get(url);
@@ -117,32 +157,9 @@ class Api {
     }
     try {
       final jsonmap = json.decode(response.body);
-      final volume = jsonmap['overTime'];
+      final volume = jsonmap['buckets'];
       if (volume == null) return null;
-      return List<PairVolume>.from(volume.map((a) => PairVolume.fromJson(a)));
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  static Future<List<PairLiquidity>> fetchPairLiquidity(String pair) async {
-    String url = apiUrl + '/pairs/' + pair + '/liquidity';
-    http.Response response;
-    try {
-      response = await http.get(url);
-    } catch (err) {
-      throw err;
-    }
-    if (response.statusCode != 200) {
-      var e = ErrorResponse.parse(response);
-      throw e;
-    }
-    try {
-      final jsonmap = json.decode(response.body);
-      final volume = jsonmap['overTime'];
-      if (volume == null) return null;
-      return List<PairLiquidity>.from(
-          volume.map((a) => PairLiquidity.fromJson(a)));
+      return List<PairBucket>.from(volume.map((a) => PairBucket.fromJson(a)));
     } catch (err) {
       throw err;
     }

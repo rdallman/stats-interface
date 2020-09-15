@@ -13,7 +13,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'GoSwap Stats',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        brightness: Brightness.dark,
+        primarySwatch: Colors.deepPurple,
+        textTheme: TextTheme(
+          headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+        ),
+        // scaffoldBackgroundColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          // brightness: Brightness.dark,
+          // color: Color(0xff2c274c),
+          color: Color(0xff46426c),
+        ),
       ),
       home: HomeView(),
       onGenerateRoute: router.gerenateRoute,

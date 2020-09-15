@@ -1,6 +1,8 @@
 import 'package:decimal/decimal.dart';
 
-class PairVolume {
+import 'globals.dart';
+
+class PairBucket {
   // "overTime": [
   //   {
   //     "time": "2020-09-10T18:00:00Z",
@@ -22,7 +24,12 @@ class PairVolume {
   Decimal price1USD;
   Decimal volumeUSD;
 
-  PairVolume(
+  Decimal totalSupply;
+  Decimal reserve0;
+  Decimal reserve1;
+  Decimal liquidityUSD;
+
+  PairBucket(
       {DateTime timeStamp,
       String pair,
       Decimal amount0In,
@@ -31,7 +38,11 @@ class PairVolume {
       Decimal amount1In,
       Decimal amount1Out,
       Decimal price1USD,
-      Decimal volumeUSD})
+      Decimal volumeUSD,
+      this.totalSupply,
+      this.reserve0,
+      this.reserve1,
+      this.liquidityUSD})
       : this.timeStamp = timeStamp,
         this.volumeUSD = volumeUSD,
         this.amount0In = amount0In,
@@ -42,16 +53,20 @@ class PairVolume {
         this.price1USD = price1USD,
         this.pair = pair;
 
-  PairVolume.fromJson(Map<String, dynamic> json)
-      : timeStamp = DateTime.parse(json['time']),
-        volumeUSD = Decimal.parse(json['volumeUSD']),
-        amount0In = Decimal.parse(json['amount0In']),
-        amount0Out = Decimal.parse(json['amount0Out']),
-        price0USD = Decimal.parse(json['price0USD']),
-        amount1In = Decimal.parse(json['amount1In']),
-        amount1Out = Decimal.parse(json['amount1Out']),
-        price1USD = Decimal.parse(json['price1USD']),
-        pair = json['pair'];
+  PairBucket.fromJson(Map<String, dynamic> json)
+      : timeStamp = json['time'] != null ? DateTime.parse(json['time']) : null,
+        pair = json['pair'],
+        volumeUSD = Globals.toDec(json['volumeUSD']),
+        amount0In = Globals.toDec(json['amount0In']),
+        amount0Out = Globals.toDec(json['amount0Out']),
+        price0USD = Globals.toDec(json['price0USD']),
+        amount1In = Globals.toDec(json['amount1In']),
+        amount1Out = Globals.toDec(json['amount1Out']),
+        price1USD = Globals.toDec(json['price1USD']),
+        totalSupply = Globals.toDec(json['totalSupply']),
+        reserve0 = Globals.toDec(json['reserve0']),
+        reserve1 = Globals.toDec(json['reserve1']),
+        liquidityUSD = Globals.toDec(json['liquidityUSD']);
 
   Map<String, dynamic> toJson() => {
         'time': timeStamp,
@@ -62,6 +77,9 @@ class PairVolume {
         'amount1In': amount1In,
         'amount1Out': amount1Out,
         'price1USD': price1USD,
-        'pair': pair
+        'pair': pair,
+        'totalSupply': totalSupply,
+        'reserve0': reserve0,
+        'reserve1': reserve1,
       };
 }

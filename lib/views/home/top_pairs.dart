@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:goswapinfo/common/globals.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:goswapinfo/common/api.dart';
 import 'package:goswapinfo/common/pair.dart';
 import 'package:goswapinfo/common/styles.dart';
@@ -37,13 +39,13 @@ class _TopPairsState extends State<TopPairs> {
             future: pairsF, // a previously-obtained Future<String> or null
             builder:
                 (BuildContext context, AsyncSnapshot<List<Pair>> snapshot) {
-              print(snapshot);
-              print(snapshot.data);
+              // print(snapshot);
+              // print(snapshot.data);
               if (snapshot.hasError) {
                 return Styles.errorText(snapshot.error.toString());
               }
               if (snapshot.hasData) {
-                print("DATA: ${snapshot.data}");
+                // print("DATA: ${snapshot.data}");
                 return table(context, snapshot.data);
               }
               return Styles.waiting();
@@ -57,9 +59,26 @@ class _TopPairsState extends State<TopPairs> {
     for (final p in pairs) {
       rows.add(DataRow(
         cells: <DataCell>[
-          DataCell(Text(p.toString())),
+          DataCell(InkWell(
+            child: Text(
+              p.toString(),
+              style: TextStyle(
+                color: Colors.blue,
+                decoration: TextDecoration.underline,
+                decorationColor: Colors.blue,
+                // decorationStyle: TextDecorationStyle.wavy,
+              ),
+            ),
+            onTap: () {
+              launch(
+                  "${Globals.uiURL}/#/swap?inputCurrency=${p.token0.address}&outputCurrency=${p.token1.address}");
+            },
+          )),
+          // LINK:
+          DataCell(Text(' ABC')),
+          // '${Globals.usdFormatCompact.format(p.stats.liquidityUSD.toDouble())}')),
           DataCell(Text('123')),
-          DataCell(Text('456')),
+          // '${Globals.usdFormatCompact.format(p.stats.volumeUSD.toDouble())}')),
         ],
       ));
     }
@@ -79,7 +98,7 @@ class _TopPairsState extends State<TopPairs> {
         ),
         DataColumn(
           label: Text(
-            'Volume',
+            'Volume (24hr)',
             style: TextStyle(fontStyle: FontStyle.italic),
           ),
         ),
