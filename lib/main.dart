@@ -11,7 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+<<<<<<< HEAD
       title: 'Goswap info',
+=======
+      title: 'GoSwap Stats',
+>>>>>>> 36b63a5c149423d20279ed94160dbf47f3e9d8a1
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

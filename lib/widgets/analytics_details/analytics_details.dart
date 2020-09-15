@@ -19,12 +19,6 @@ class AnalyticsDetails extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          new Flexible(
-            child: TextField(
-              decoration: InputDecoration(
-                  hintText: 'Search Uniswap pairs and tokens...'),
-            ),
-          ),
           SizedBox(
             height: 30,
           ),

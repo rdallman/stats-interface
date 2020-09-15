@@ -1,11 +1,11 @@
 {
-    "name": "goswapinfo",
-    "short_name": "goswapinfo",
+    "name": "GoSwap Stats",
+    "short_name": "GoSwap Stats",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "GoSwap Stats",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

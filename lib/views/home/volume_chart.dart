@@ -8,15 +8,14 @@ import 'package:goswapinfo/common/total.dart';
 import 'package:decimal/decimal.dart';
 import 'package:intl/intl.dart';
 
-class LiquidityChart extends StatefulWidget {
+class VolumeChart extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => LiquidityChartState();
+  _VolumeChartState createState() => _VolumeChartState();
 }
 
-class LiquidityChartState extends State<LiquidityChart> {
+class _VolumeChartState extends State<VolumeChart> {
   bool isShowingMainData;
   Future<List<Total>> totalsF;
-
   var nf = NumberFormat.compactCurrency(locale: "en_US", symbol: "\$");
 
   @override
@@ -71,6 +70,11 @@ class LiquidityChartState extends State<LiquidityChart> {
           if (snapshot.hasData) {
             var data = snapshot.data;
             // TODO: if len 0, show something else
+            // add up total volume
+            Decimal totalVolume = Decimal.zero;
+            for (final e in data) {
+              totalVolume += e.volumeUSD;
+            }
             return Center(
               child: Center(
                 child: Container(
@@ -91,7 +95,7 @@ class LiquidityChartState extends State<LiquidityChart> {
                         height: 37,
                       ),
                       const Text(
-                        'Liquidity 2020',
+                        'Volume',
                         style: TextStyle(
                           color: Color(0xff827daa),
                           fontSize: 16,
@@ -102,8 +106,7 @@ class LiquidityChartState extends State<LiquidityChart> {
                         height: 4,
                       ),
                       Text(
-                        nf.format(
-                            data[data.length - 1].liquidityUSD.toDouble()),
+                        nf.format(totalVolume.toDouble()),
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 32,
@@ -169,7 +172,7 @@ class LiquidityChartState extends State<LiquidityChart> {
           ),
           margin: 10,
           getTitles: (value) {
-            // print("title: $value");
+            print("title: $value");
             var dt = DateTime.fromMillisecondsSinceEpoch(value.toInt());
             return "${dt.day} ${dt.hour}";
           },
@@ -223,9 +226,7 @@ class LiquidityChartState extends State<LiquidityChart> {
     var rand = new Random();
     List<FlSpot> l = List<FlSpot>.from(totals.map((a) => FlSpot(
         a.timeStamp.millisecondsSinceEpoch.toDouble(),
-        a.liquidityUSD.toDouble() +
-            (rand.nextDouble() *
-                100000)))); // TODO:: remove rand, just doing this to have some fluctuation
+        a.volumeUSD.toDouble())));
     // l[0] = FlSpot(l[0].x, 0);
     return [
       LineChartBarData(
