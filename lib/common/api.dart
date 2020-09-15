@@ -50,7 +50,7 @@ class Api {
     }
     try {
       final jsonmap = json.decode(response.body);
-      print("jsonmap: $jsonmap");
+      // print("jsonmap: $jsonmap");
       final tokens = jsonmap['tokens'];
       if (tokens == null) return null;
       return List<Token>.from(tokens.map((a) {
@@ -79,16 +79,16 @@ class Api {
     }
     try {
       final jsonmap = json.decode(response.body);
-      print("jsonmap: $jsonmap");
+      // print("jsonmap: $jsonmap");
       final tokens = jsonmap['pairs'];
       final stats = jsonmap['stats'];
-      print("STATS XXX: $stats");
+      // print("STATS XXX: $stats");
       if (tokens == null) return null;
       return List<Pair>.from(tokens.map((a) {
         var p = Pair.fromJson(a);
-        print("ADDRESS: ${p.address}");
+        // print("ADDRESS: ${p.address}");
         var s = stats[p.address];
-        print("STATS: $s");
+        // print("STATS: $s");
         p.stats = PairBucket.fromJson(s);
         return p;
       }));

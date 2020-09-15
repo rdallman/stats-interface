@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:goswapinfo/widgets/charts/liquidity_chart/liquidity_chart.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'top_pairs.dart';
 import 'top_tokens.dart';
@@ -17,6 +18,16 @@ class HomeView extends StatelessWidget {
             SizedBox(height: 30, child: Image.asset('assets/logo-white.png')),
         // title: const Text('GoSwap Stats'),
         actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: RaisedButton(
+                color: Colors.white,
+                child:
+                    Text("Go to GoSwap", style: TextStyle(color: Colors.blue)),
+                onPressed: () {
+                  launch('https://goswap.exchange');
+                }),
+          ),
           // IconButton(
           //   icon: const Icon(Icons.add_alert),
           //   tooltip: 'Show Snackbar',
@@ -47,7 +58,7 @@ class HomeView extends StatelessWidget {
           ),
           child: Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
+              // padding: const EdgeInsets.symmetric(horizontal: 30),
               // alignment: Alignment.topCenter,
               // constraints: BoxConstraints(maxWidth: 1200),
               // child: ConstrainedBox(
@@ -60,26 +71,38 @@ class HomeView extends StatelessWidget {
                   // NavigationBar(),
                   Container(
                     // constraints: BoxConstraints(maxHeight: 300),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    child: Wrap(
+                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        spacing: 40,
+                        runSpacing: 30,
                         children: [
-                          Expanded(child: LiquidityChart()),
-                          SizedBox(width: 50),
+                          Container(
+                            constraints:
+                                BoxConstraints(minWidth: 100, maxWidth: 600),
+                            child: LiquidityChart(),
+                          ),
+                          // SizedBox(width: 50),
                           // Expanded(
                           // child:
                           // AnalyticsDetails(),
                           // ),
-                          Expanded(child: VolumeChart()),
+                          Container(
+                            constraints:
+                                BoxConstraints(minWidth: 100, maxWidth: 600),
+                            child: VolumeChart(),
+                          ),
                         ]),
                   ),
                   const SizedBox(
                     height: 37,
                   ),
-                  TopPairs(),
-                  const SizedBox(
-                    height: 37,
-                  ),
-                  TopTokens(),
+                  Wrap(spacing: 30, runSpacing: 30, children: [
+                    TopPairs(),
+                    // const SizedBox(
+                    //   height: 37,
+                    // ),
+                    TopTokens(),
+                  ]),
                 ],
               ),
             ),

@@ -72,6 +72,8 @@ class LiquidityChartState extends State<LiquidityChart> {
           if (snapshot.hasData) {
             var data = snapshot.data;
             // TODO: if len 0, show something else
+            var last = data[data.length - 1];
+            print("LAST BUCKET: ${last.timeStamp} ${last.liquidityUSD}");
             return Center(
               child: Center(
                 child: Container(

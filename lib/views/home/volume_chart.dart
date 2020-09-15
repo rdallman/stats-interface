@@ -150,8 +150,8 @@ class _VolumeChartState extends State<VolumeChart> {
     return LineChartData(
       // extraLinesData: ExtraLinesData(horizontalLines: [HorizontalLine(y: 0)]),
       lineTouchData: LineTouchData(
-        enabled: false,
-      ),
+          // enabled: false,
+          ),
       gridData: FlGridData(
         show: false,
       ),

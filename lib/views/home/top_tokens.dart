@@ -44,7 +44,7 @@ class _TopTokensState extends State<TopTokens> {
                 return Styles.errorText(snapshot.error.toString());
               }
               if (snapshot.hasData) {
-                print("DATA: ${snapshot.data}");
+                // print("DATA: ${snapshot.data}");
                 return table(context, snapshot.data);
               }
               return Styles.waiting();
