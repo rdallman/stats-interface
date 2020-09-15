@@ -75,10 +75,8 @@ class _TopPairsState extends State<TopPairs> {
             },
           )),
           // LINK:
-          DataCell(Text(' ABC')),
-          // '${Globals.usdFormatCompact.format(p.stats.liquidityUSD.toDouble())}')),
-          DataCell(Text('123')),
-          // '${Globals.usdFormatCompact.format(p.stats.volumeUSD.toDouble())}')),
+          DataCell(Text('${Globals.formatCurrency(p.stats.liquidityUSD)}')),
+          DataCell(Text('${Globals.formatCurrency(p.stats.volumeUSD)}')),
         ],
       ));
     }

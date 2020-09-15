@@ -10,4 +10,13 @@ class Globals {
 
   static NumberFormat usdFormatCompact =
       NumberFormat.compactCurrency(locale: "en_US", symbol: "\$");
+
+  static NumberFormat usdFormat = NumberFormat.simpleCurrency(locale: "en_US");
+
+  static String formatCurrency(Decimal d) {
+    if (d == null) {
+      return usdFormat.format(0.0);
+    }
+    return usdFormat.format(d.toDouble());
+  }
 }

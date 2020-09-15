@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:goswapinfo/common/api.dart';
+import 'package:goswapinfo/common/globals.dart';
 import 'package:goswapinfo/common/styles.dart';
 import 'package:goswapinfo/common/token.dart';
 
@@ -58,8 +59,9 @@ class _TopTokensState extends State<TopTokens> {
       rows.add(DataRow(
         cells: <DataCell>[
           DataCell(Text(p.toString())),
-          DataCell(Text('123')),
-          DataCell(Text('456')),
+          DataCell(Text('${Globals.formatCurrency(p.stats.liquidityUSD)}')),
+          DataCell(Text('${Globals.formatCurrency(p.stats.volumeUSD)}')),
+          DataCell(Text('${Globals.formatCurrency(p.stats.priceUSD)}')),
         ],
       ));
     }
@@ -80,6 +82,12 @@ class _TopTokensState extends State<TopTokens> {
         DataColumn(
           label: Text(
             'Volume',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            'Price',
             style: TextStyle(fontStyle: FontStyle.italic),
           ),
         ),
