@@ -27,9 +27,9 @@ jobs:
         git config --global user.name "Actions"
         git fetch --tags
         wget -O - https://raw.githubusercontent.com/treeder/bump/master/gitbump.sh | bash
-    - name: Setup prod files
-      run: |
-        docker run --rm -i -v $PWD:/app -w /app treeder/bump --filename web/index.html --replace $(git tag --sort=-v:refname --list "v[0-9]*" | head -n 1 | cut -c 2-) --index -1
+    # - name: Setup prod files
+    #   run: |
+    #     docker run --rm -i -v $PWD:/app -w /app treeder/bump --filename web/index.html --replace $(git tag --sort=-v:refname --list "v[0-9]*" | head -n 1 | cut -c 2-) --index -1
     - run: flutter build web
     - name: Deploy to Firebase
       uses: w9jds/firebase-action@master
