@@ -149,8 +149,8 @@ class LiquidityChartState extends State<LiquidityChart> {
     return LineChartData(
       // extraLinesData: ExtraLinesData(horizontalLines: [HorizontalLine(y: 0)]),
       lineTouchData: LineTouchData(
-        enabled: false,
-      ),
+          // enabled: false,
+          ),
       gridData: FlGridData(
         show: false,
       ),
