@@ -37,3 +37,4 @@ jobs:
         args: deploy --only hosting:{{secrets.FB_SITE}}
       env:
         GCP_SA_KEY: ${{ secrets.G_KEY }}
+        PROJECT_ID: ${{secrets.PROJECT_ID}}
