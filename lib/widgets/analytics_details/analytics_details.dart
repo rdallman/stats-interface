@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:goswapinfo/widgets/charts/liquidity_chart/liquidity_chart.dart';
+import 'package:goswapinfo/widgets/tokens_table/tokens_table.dart';
 
 class AnalyticsDetails extends StatelessWidget {
   const AnalyticsDetails({Key key}) : super(key: key);
@@ -9,13 +10,11 @@ class AnalyticsDetails extends StatelessWidget {
     return Container(
       width: 600,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
             'Uniswap Protocol Analytics',
             style: TextStyle(
-                fontWeight: FontWeight.w800, height: 0.9, fontSize: 20),
+                fontWeight: FontWeight.w800, height: 1.9, fontSize: 20),
           ),
           SizedBox(
             height: 10,
@@ -30,9 +29,6 @@ class AnalyticsDetails extends StatelessWidget {
             height: 30,
           ),
           LiquidityChart(),
-          SizedBox(
-            height: 10,
-          ),
         ],
       ),
     );

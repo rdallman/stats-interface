@@ -18,19 +18,23 @@ class NavigationBar extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              _NavBarItem('Overview'),
+              _NavBarItem('Overview', '/'),
               SizedBox(
                 width: 30,
               ),
-              _NavBarItem('Tokens'),
+              _NavBarItem('Tokens', 'tokens'),
               SizedBox(
                 width: 30,
               ),
-              _NavBarItem('Pairs'),
+              _NavBarItem('Pairs', 'pairs'),
               SizedBox(
                 width: 30,
               ),
-              _NavBarItem('Accounts'),
+              _NavBarItem('Accounts', 'accounts'),
+              SizedBox(
+                width: 30,
+              ),
+              _NavBarItem('Transactions', 'transactions'),
             ],
           )
         ],
@@ -41,13 +45,16 @@ class NavigationBar extends StatelessWidget {
 
 class _NavBarItem extends StatelessWidget {
   final String title;
-  const _NavBarItem(this.title);
+  final String route;
+  const _NavBarItem(this.title, this.route);
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: TextStyle(fontSize: 18),
+    return InkWell(
+      child: Text(title, style: TextStyle(fontSize: 18)),
+      onTap: () {
+        Navigator.pushNamed(context, this.route);
+      },
     );
   }
 }
