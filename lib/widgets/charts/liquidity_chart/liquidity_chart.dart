@@ -8,6 +8,7 @@ import 'package:goswapinfo/common/styles.dart';
 import 'package:goswapinfo/common/total.dart';
 import 'package:decimal/decimal.dart';
 import 'package:intl/intl.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class LiquidityChart extends StatefulWidget {
   @override
@@ -72,8 +73,21 @@ class LiquidityChartState extends State<LiquidityChart> {
           if (snapshot.hasData) {
             var data = snapshot.data;
             // TODO: if len 0, show something else
+
+            List<charts.Series<Total, DateTime>> seriesList = [];
+            var s0 = charts.Series<Total, DateTime>(
+              id: 'Liquidity',
+              colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+              domainFn: (Total sales, _) => sales.timeStamp,
+              measureFn: (Total sales, _) => sales.liquidityUSD.toDouble(),
+              data: data,
+            );
+            seriesList.add(s0);
+
             var last = data[data.length - 1];
             print("LAST BUCKET: ${last.timeStamp} ${last.liquidityUSD}");
+
+            var labelColor = charts.ColorUtil.fromDartColor(Colors.grey[200]);
             return Center(
               child: Center(
                 child: Container(
@@ -122,17 +136,62 @@ class LiquidityChartState extends State<LiquidityChart> {
                         padding: const EdgeInsets.only(right: 16.0, left: 6.0),
                         child: Container(
                           height: 400,
-                          child: LineChart(
-                            sampleData(snapshot.data),
-                            swapAnimationDuration:
-                                const Duration(milliseconds: 250),
+                          // child: LineChart(
+                          //   sampleData(snapshot.data),
+                          //   swapAnimationDuration:
+                          //       const Duration(milliseconds: 250),
+                          // ),
+                          child: charts.TimeSeriesChart(
+                            seriesList,
+                            domainAxis: new charts.DateTimeAxisSpec(
+                                // tickFormatterSpec:
+                                //     new charts.AutoDateTimeTickFormatterSpec(
+                                //         day: new charts.TimeFormatterSpec(
+                                //             format: 'd',
+                                //             transitionFormat: 'MM/dd/yyyy')),
+                                renderSpec: new charts.SmallTickRendererSpec(
+                                    // Tick and Label styling here.
+                                    labelStyle: new charts.TextStyleSpec(
+                                        fontSize: 18, // size in Pts.
+                                        color: labelColor),
+
+                                    // Change the line colors to match text color.
+                                    lineStyle: new charts.LineStyleSpec(
+                                        color: labelColor))),
+
+                            /// Assign a custom style for the measure axis.
+                            primaryMeasureAxis: new charts.NumericAxisSpec(
+                                tickFormatterSpec: charts
+                                        .BasicNumericTickFormatterSpec
+                                    .fromNumberFormat(Globals.usdFormatCompact),
+                                renderSpec: new charts.GridlineRendererSpec(
+
+                                    // Tick and Label styling here.
+                                    labelStyle: new charts.TextStyleSpec(
+                                        fontSize: 18, // size in Pts.
+                                        color: labelColor),
+
+                                    // Change the line colors to match text color.
+                                    lineStyle: new charts.LineStyleSpec(
+                                        color: labelColor))),
+
+                            // animate: animate,
+                            // Optionally pass in a [DateTimeFactory] used by the chart. The factory
+                            // should create the same type of [DateTime] as the data provided. If none
+                            // specified, the default creates local date time.
+                            // dateTimeFactory:
+                            //     const charts.LocalDateTimeFactory(),
+                            // behaviors: [
+                            //   charts.LinePointHighlighter(
+                            //       symbolRenderer: CustomCircleSymbolRenderer())
+                            // ],
                           ),
                         ),
                       ),
                       // ),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      // const SizedBox(
+                      //   height: 10,
+                      // ),
                     ],
                   ),
                 ),

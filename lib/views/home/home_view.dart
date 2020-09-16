@@ -14,8 +14,12 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title:
+        title: Row(
+          children: [
             SizedBox(height: 30, child: Image.asset('assets/logo-white.png')),
+            //  Text("Stats")
+          ],
+        ),
         // title: const Text('GoSwap Stats'),
         actions: <Widget>[
           Padding(

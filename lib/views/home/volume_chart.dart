@@ -8,6 +8,7 @@ import 'package:goswapinfo/common/styles.dart';
 import 'package:goswapinfo/common/total.dart';
 import 'package:decimal/decimal.dart';
 import 'package:intl/intl.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class VolumeChart extends StatefulWidget {
   @override
@@ -72,10 +73,21 @@ class _VolumeChartState extends State<VolumeChart> {
             var data = snapshot.data;
             // TODO: if len 0, show something else
             // add up total volume
+            List<charts.Series<Total, DateTime>> seriesList = [];
+            var s0 = charts.Series<Total, DateTime>(
+              id: 'Volume',
+              colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+              domainFn: (Total sales, _) => sales.timeStamp,
+              measureFn: (Total sales, _) => sales.volumeUSD.toDouble(),
+              data: data,
+            );
+            seriesList.add(s0);
             Decimal totalVolume = Decimal.zero;
             for (final e in data) {
               totalVolume += e.volumeUSD;
             }
+
+            var labelColor = charts.ColorUtil.fromDartColor(Colors.grey[200]);
             return Center(
               child: Center(
                 child: Container(
@@ -123,17 +135,62 @@ class _VolumeChartState extends State<VolumeChart> {
                         padding: const EdgeInsets.only(right: 16.0, left: 6.0),
                         child: Container(
                           height: 400,
-                          child: LineChart(
-                            sampleData(snapshot.data),
-                            swapAnimationDuration:
-                                const Duration(milliseconds: 250),
+                          // child: LineChart(
+                          //   sampleData(snapshot.data),
+                          //   swapAnimationDuration:
+                          //       const Duration(milliseconds: 250),
+                          // ),
+                          child: charts.TimeSeriesChart(
+                            seriesList,
+                            domainAxis: new charts.DateTimeAxisSpec(
+                                // tickFormatterSpec:
+                                //     new charts.AutoDateTimeTickFormatterSpec(
+                                //         day: new charts.TimeFormatterSpec(
+                                //             format: 'd',
+                                //             transitionFormat: 'MM/dd/yyyy')),
+                                renderSpec: new charts.SmallTickRendererSpec(
+                                    // Tick and Label styling here.
+                                    labelStyle: new charts.TextStyleSpec(
+                                        fontSize: 18, // size in Pts.
+                                        color: labelColor),
+
+                                    // Change the line colors to match text color.
+                                    lineStyle: new charts.LineStyleSpec(
+                                        color: labelColor))),
+
+                            /// Assign a custom style for the measure axis.
+                            primaryMeasureAxis: new charts.NumericAxisSpec(
+                                tickFormatterSpec: charts
+                                        .BasicNumericTickFormatterSpec
+                                    .fromNumberFormat(Globals.usdFormatCompact),
+                                renderSpec: new charts.GridlineRendererSpec(
+
+                                    // Tick and Label styling here.
+                                    labelStyle: new charts.TextStyleSpec(
+                                        fontSize: 18, // size in Pts.
+                                        color: labelColor),
+
+                                    // Change the line colors to match text color.
+                                    lineStyle: new charts.LineStyleSpec(
+                                        color: labelColor))),
+
+                            // animate: animate,
+                            // Optionally pass in a [DateTimeFactory] used by the chart. The factory
+                            // should create the same type of [DateTime] as the data provided. If none
+                            // specified, the default creates local date time.
+                            // dateTimeFactory:
+                            //     const charts.LocalDateTimeFactory(),
+                            // behaviors: [
+                            //   charts.LinePointHighlighter(
+                            //       symbolRenderer: CustomCircleSymbolRenderer())
+                            // ],
                           ),
                         ),
                       ),
                       // ),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      // const SizedBox(
+                      //   height: 10,
+                      // ),
                     ],
                   ),
                 ),
@@ -252,3 +309,33 @@ class _VolumeChartState extends State<VolumeChart> {
     ];
   }
 }
+
+// // from here: https://github.com/google/charts/issues/58#issuecomment-581776923
+// class CustomCircleSymbolRenderer extends charts.CircleSymbolRenderer {
+//   @override
+//   void paint(charts.ChartCanvas canvas, Rectangle bounds,
+//       {List dashPattern,
+//       charts.Color fillColor,
+//       charts.Color strokeColor,
+//       double strokeWidthPx}) {
+//     super.paint(canvas, bounds,
+//         dashPattern: dashPattern,
+//         fillColor: fillColor,
+//         strokeColor: strokeColor,
+//         strokeWidthPx: strokeWidthPx);
+//     canvas.drawRect(
+//         Rectangle(bounds.left - 5, bounds.top - 30, bounds.width + 10,
+//             bounds.height + 10),
+//         fill: charts.Color.white);
+//     // var textStyle = style.TextStyle();
+//     // textStyle.color = Color.black;
+//     // textStyle.fontSize = 15;
+//     canvas.drawText(
+//         charts.TextElement(
+//           charts.CustomMeasureTickCount.pointerValue,
+//           // style: textStyle
+//         ),
+//         (bounds.left).round(),
+//         (bounds.top - 28).round());
+//   }
+// }
