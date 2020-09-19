@@ -82,10 +82,16 @@ class _VolumeChartState extends State<VolumeChart> {
               data: data,
             );
             seriesList.add(s0);
-            Decimal totalVolume = Decimal.zero;
-            for (final e in data) {
-              totalVolume += e.volumeUSD;
-            }
+
+            // this was when it was hourly:
+            // Decimal totalVolume = Decimal.zero;
+            // for (final e in data) {
+            //   totalVolume += e.volumeUSD;
+            // }
+            // Now that the default is daily, just use last bucket
+            var last = data[data.length - 1];
+            print("LAST VOL BUCKET: ${last.timeStamp} ${last.volumeUSD}");
+            Decimal totalVolume = last.volumeUSD;
 
             var labelColor = charts.ColorUtil.fromDartColor(Colors.grey[200]);
             return Center(
@@ -108,7 +114,7 @@ class _VolumeChartState extends State<VolumeChart> {
                         height: 37,
                       ),
                       const Text(
-                        'Volume',
+                        'Volume (24hr)',
                         style: TextStyle(
                           color: Color(0xff827daa),
                           fontSize: 16,
