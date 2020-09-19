@@ -81,7 +81,7 @@ class _TopTokensState extends State<TopTokens> {
         ),
         DataColumn(
           label: Text(
-            'Volume',
+            'Volume (24hr)',
             style: TextStyle(fontStyle: FontStyle.italic),
           ),
         ),
