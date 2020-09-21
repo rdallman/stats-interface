@@ -10,9 +10,7 @@ import 'total.dart';
 const bool prod = const bool.fromEnvironment('dart.vm.product');
 
 class Api {
-  static final String apiUrl = prod
-      ? 'https://goswap-stats-xcefncm5jq-uc.a.run.app'
-      : 'http://localhost:8080';
+  static final String apiUrl = 'https://goswap-stats-xcefncm5jq-uc.a.run.app';
 
   static Future<List<Total>> fetchTotals() async {
     String url = apiUrl + '/totals';

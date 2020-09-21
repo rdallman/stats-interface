@@ -148,6 +148,11 @@ class _VolumeChartState extends State<VolumeChart> {
                           // ),
                           child: charts.TimeSeriesChart(
                             seriesList,
+
+                            // Convert into bar chart
+                            defaultRenderer:
+                                new charts.BarRendererConfig<DateTime>(),
+
                             domainAxis: new charts.DateTimeAxisSpec(
                                 // tickFormatterSpec:
                                 //     new charts.AutoDateTimeTickFormatterSpec(
@@ -180,6 +185,8 @@ class _VolumeChartState extends State<VolumeChart> {
                                     lineStyle: new charts.LineStyleSpec(
                                         color: labelColor))),
 
+                            // Hightlight selected bar
+                            behaviors: [new charts.DomainHighlighter()],
                             // animate: animate,
                             // Optionally pass in a [DateTimeFactory] used by the chart. The factory
                             // should create the same type of [DateTime] as the data provided. If none
