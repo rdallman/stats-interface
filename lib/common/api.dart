@@ -1,4 +1,3 @@
-import 'package:goswapinfo/common/pair_liquidity.dart';
 import 'package:goswapinfo/common/token.dart';
 import 'package:goswapinfo/common/volume.dart';
 import 'package:goswapinfo/common/pair_volume.dart';
@@ -10,7 +9,7 @@ import 'total.dart';
 const bool prod = const bool.fromEnvironment('dart.vm.product');
 
 class Api {
-  static final String apiUrl = 'https://goswap-stats-xcefncm5jq-uc.a.run.app';
+  static final String apiUrl = 'https://stats-api.goswap.exchange';
 
   static Future<List<Total>> fetchTotals() async {
     String url = apiUrl + '/totals';

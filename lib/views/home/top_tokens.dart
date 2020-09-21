@@ -45,7 +45,10 @@ class _TopTokensState extends State<TopTokens> {
               }
               if (snapshot.hasData) {
                 // print("DATA: ${snapshot.data}");
-                return table(context, snapshot.data);
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: table(context, snapshot.data),
+                );
               }
               return Styles.waiting();
             }),

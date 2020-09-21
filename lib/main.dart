@@ -25,6 +25,14 @@ class MyApp extends StatelessWidget {
           // color: Color(0xff2c274c),
           color: Color(0xff46426c),
         ),
+        cardTheme: CardTheme(
+          // color: Colors.deepPurple[800],
+          color: Color(0xff2c274c),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: BorderSide(color: Colors.grey[600]),
+          ),
+        ),
       ),
       home: HomeView(),
     );

@@ -33,7 +33,7 @@ class _TopPairsState extends State<TopPairs> {
           textAlign: TextAlign.center,
         ),
         const SizedBox(
-          height: 37,
+          height: 16,
         ),
         FutureBuilder<List<Pair>>(
             future: pairsF, // a previously-obtained Future<String> or null
@@ -46,7 +46,10 @@ class _TopPairsState extends State<TopPairs> {
               }
               if (snapshot.hasData) {
                 // print("DATA: ${snapshot.data}");
-                return table(context, snapshot.data);
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: table(context, snapshot.data),
+                );
               }
               return Styles.waiting();
             }),

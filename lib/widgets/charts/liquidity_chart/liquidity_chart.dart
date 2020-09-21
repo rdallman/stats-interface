@@ -104,9 +104,6 @@ class LiquidityChartState extends State<LiquidityChart> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      const SizedBox(
-                        height: 37,
-                      ),
                       const Text(
                         'Liquidity',
                         style: TextStyle(
@@ -129,7 +126,7 @@ class LiquidityChartState extends State<LiquidityChart> {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(
-                        height: 37,
+                        height: 25,
                       ),
                       // Expanded(
                       Padding(

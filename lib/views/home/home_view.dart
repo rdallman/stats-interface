@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:goswapinfo/widgets/charts/liquidity_chart/liquidity_chart.dart';
+import 'package:goswapinfo/widgets/padded_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'top_pairs.dart';
@@ -71,8 +72,11 @@ class HomeView extends StatelessWidget {
               // ),
 
               child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  // NavigationBar(),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Container(
                     // constraints: BoxConstraints(maxHeight: 300),
                     child: Wrap(
@@ -80,32 +84,16 @@ class HomeView extends StatelessWidget {
                         spacing: 40,
                         runSpacing: 30,
                         children: [
-                          Container(
-                            constraints:
-                                BoxConstraints(minWidth: 100, maxWidth: 600),
-                            child: LiquidityChart(),
-                          ),
-                          // SizedBox(width: 50),
-                          // Expanded(
-                          // child:
-                          // AnalyticsDetails(),
-                          // ),
-                          Container(
-                            constraints:
-                                BoxConstraints(minWidth: 100, maxWidth: 600),
-                            child: VolumeChart(),
-                          ),
+                          PaddedCard(child: LiquidityChart()),
+                          PaddedCard(child: VolumeChart()),
                         ]),
                   ),
                   const SizedBox(
-                    height: 37,
+                    height: 20,
                   ),
                   Wrap(spacing: 30, runSpacing: 30, children: [
-                    TopPairs(),
-                    // const SizedBox(
-                    //   height: 37,
-                    // ),
-                    TopTokens(),
+                    PaddedCard(child: TopPairs()),
+                    PaddedCard(child: TopTokens()),
                   ]),
                 ],
               ),
