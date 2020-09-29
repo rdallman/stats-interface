@@ -12,7 +12,10 @@ class Api {
   static final String apiUrl = 'https://stats-api.goswap.exchange';
 
   static Future<List<Total>> fetchTotals() async {
-    String url = apiUrl + '/totals';
+    DateTime now = DateTime.now();
+    DateTime dStart = now.subtract(Duration(hours: 24));
+    String url =
+        "$apiUrl/totals?start_time=${dStart}&end_time=${now.toIso8601String()}&interval=24h";
     http.Response response;
     try {
       response = await http.get(url);
@@ -34,7 +37,10 @@ class Api {
   }
 
   static Future<List<Token>> fetchTokens() async {
-    String url = apiUrl + '/tokens';
+    DateTime now = DateTime.now();
+    DateTime dStart = now.subtract(Duration(hours: 24));
+    String url =
+        "$apiUrl/tokens?start_time=${dStart}&end_time=${now.toIso8601String()}&interval=24h";
     http.Response response;
     try {
       response = await http.get(url);
@@ -63,7 +69,10 @@ class Api {
   }
 
   static Future<List<Pair>> fetchPairs() async {
-    String url = apiUrl + '/pairs';
+    DateTime now = DateTime.now();
+    DateTime dStart = now.subtract(Duration(hours: 24));
+    String url =
+        "$apiUrl/pairs?start_time=${dStart}&end_time=${now.toIso8601String()}&interval=24h";
     http.Response response;
     try {
       response = await http.get(url);
