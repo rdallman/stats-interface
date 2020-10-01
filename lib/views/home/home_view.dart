@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:goswapinfo/common/api.dart';
+import 'package:goswapinfo/common/total.dart';
 import 'package:goswapinfo/widgets/charts/liquidity_chart/liquidity_chart.dart';
 import 'package:goswapinfo/widgets/padded_card.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -7,8 +9,21 @@ import 'top_pairs.dart';
 import 'top_tokens.dart';
 import 'volume_chart.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({Key key}) : super(key: key);
+class HomeView extends StatefulWidget {
+  HomeView({Key key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  Future<List<Total>> totalsF;
+
+  @override
+  void initState() {
+    super.initState();
+    totalsF = Api.fetchTotals();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +99,8 @@ class HomeView extends StatelessWidget {
                         spacing: 40,
                         runSpacing: 30,
                         children: [
-                          PaddedCard(child: LiquidityChart()),
-                          PaddedCard(child: VolumeChart()),
+                          PaddedCard(child: LiquidityChart(totalsF)),
+                          PaddedCard(child: VolumeChart(totalsF)),
                         ]),
                   ),
                   const SizedBox(

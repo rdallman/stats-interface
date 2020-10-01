@@ -2,29 +2,32 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:goswapinfo/common/api.dart';
 import 'package:goswapinfo/common/globals.dart';
 import 'package:goswapinfo/common/styles.dart';
 import 'package:goswapinfo/common/total.dart';
-import 'package:decimal/decimal.dart';
 import 'package:intl/intl.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class LiquidityChart extends StatefulWidget {
+  final Future<List<Total>> totalsF;
+
+  LiquidityChart(this.totalsF);
+
   @override
-  State<StatefulWidget> createState() => LiquidityChartState();
+  State<StatefulWidget> createState() => _LiquidityChartState(totalsF);
 }
 
-class LiquidityChartState extends State<LiquidityChart> {
+class _LiquidityChartState extends State<LiquidityChart> {
   bool isShowingMainData;
   Future<List<Total>> totalsF;
 
   var nf = NumberFormat.compactCurrency(locale: "en_US", symbol: "\$");
 
+  _LiquidityChartState(this.totalsF);
+
   @override
   void initState() {
     super.initState();
-    totalsF = Api.fetchTotals();
     isShowingMainData = false;
     // Api.fetchPairLiquidity('FAST-WGO').then((value) {
     //   for (var e in value) {

@@ -11,11 +11,15 @@ const bool prod = const bool.fromEnvironment('dart.vm.product');
 class Api {
   static final String apiUrl = 'https://stats-api.goswap.exchange';
 
+  static String rfc3339(DateTime dt) {
+    return dt.toUtc().toIso8601String();
+  }
+
   static Future<List<Total>> fetchTotals() async {
     DateTime now = DateTime.now();
-    DateTime dStart = now.subtract(Duration(hours: 24));
+    DateTime dStart = now.subtract(Duration(days: 60));
     String url =
-        "$apiUrl/totals?start_time=${dStart}&end_time=${now.toIso8601String()}&interval=24h";
+        "$apiUrl/totals?start_time=${rfc3339(dStart)}&end_time=${rfc3339(now)}&interval=24h";
     http.Response response;
     try {
       response = await http.get(url);
@@ -40,7 +44,7 @@ class Api {
     DateTime now = DateTime.now();
     DateTime dStart = now.subtract(Duration(hours: 24));
     String url =
-        "$apiUrl/tokens?start_time=${dStart}&end_time=${now.toIso8601String()}&interval=24h";
+        "$apiUrl/tokens?start_time=${rfc3339(dStart)}&end_time=${rfc3339(now)}&interval=24h";
     http.Response response;
     try {
       response = await http.get(url);
@@ -72,7 +76,7 @@ class Api {
     DateTime now = DateTime.now();
     DateTime dStart = now.subtract(Duration(hours: 24));
     String url =
-        "$apiUrl/pairs?start_time=${dStart}&end_time=${now.toIso8601String()}&interval=24h";
+        "$apiUrl/pairs?start_time=${rfc3339(dStart)}&end_time=${rfc3339(now)}&interval=24h";
     http.Response response;
     try {
       response = await http.get(url);

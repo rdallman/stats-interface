@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:goswapinfo/common/api.dart';
 import 'package:goswapinfo/common/globals.dart';
 import 'package:goswapinfo/common/styles.dart';
 import 'package:goswapinfo/common/total.dart';
@@ -11,19 +10,25 @@ import 'package:intl/intl.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class VolumeChart extends StatefulWidget {
+  final Future<List<Total>> totalsF;
+
+  VolumeChart(this.totalsF);
+
   @override
-  _VolumeChartState createState() => _VolumeChartState();
+  _VolumeChartState createState() => _VolumeChartState(totalsF);
 }
 
 class _VolumeChartState extends State<VolumeChart> {
   bool isShowingMainData;
-  Future<List<Total>> totalsF;
   var nf = NumberFormat.compactCurrency(locale: "en_US", symbol: "\$");
+  Future<List<Total>> totalsF;
+
+  _VolumeChartState(this.totalsF);
 
   @override
   void initState() {
     super.initState();
-    totalsF = Api.fetchTotals();
+
     isShowingMainData = false;
     // Api.fetchPairLiquidity('FAST-WGO').then((value) {
     //   for (var e in value) {
