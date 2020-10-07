@@ -9,9 +9,7 @@ import 'total.dart';
 const bool prod = const bool.fromEnvironment('dart.vm.product');
 
 class Api {
-  // static final String apiUrl = 'https://goswap-stats-xcefncm5jq-uc.a.run.app';
-
-  static final String apiUrl = 'https://stats-api.goswap.exchange';
+  static final String apiUrl = 'https://stats-api.goswap.exchange/v1';
 
   static String rfc3339(DateTime dt) {
     return dt.toUtc().toIso8601String();
@@ -21,7 +19,7 @@ class Api {
     DateTime now = DateTime.now();
     DateTime dStart = now.subtract(Duration(days: 60));
     String url =
-        "$apiUrl/totals?start_time=${rfc3339(dStart)}&end_time=${rfc3339(now)}&interval=24h";
+        "$apiUrl/stats?time_start=${rfc3339(dStart)}&time_end=${rfc3339(now)}&time_frame=24h";
     http.Response response;
     try {
       response = await http.get(url);
@@ -34,7 +32,7 @@ class Api {
     }
     try {
       final jsonmap = json.decode(response.body);
-      final totals = jsonmap['overTime'];
+      final totals = jsonmap['stats'];
       if (totals == null) return null;
       return List<Total>.from(totals.map((a) => Total.fromJson(a)));
     } catch (err) {
@@ -42,11 +40,11 @@ class Api {
     }
   }
 
-  static Future<List<Token>> fetchTokens() async {
+  static Future<List<TokenBucket>> fetchTokens() async {
     DateTime now = DateTime.now();
     DateTime dStart = now.subtract(Duration(hours: 24));
     String url =
-        "$apiUrl/tokens?start_time=${rfc3339(dStart)}&end_time=${rfc3339(now)}&interval=24h";
+        "$apiUrl/stats/tokens?time_start=${rfc3339(dStart)}&time_end=${rfc3339(now)}&time_frame=24h";
     http.Response response;
     try {
       response = await http.get(url);
@@ -60,13 +58,9 @@ class Api {
     try {
       final jsonmap = json.decode(response.body);
       // print("jsonmap: $jsonmap");
-      final tokens = jsonmap['tokens'];
+      final tokens = jsonmap['stats'];
       if (tokens == null) return null;
-      return List<Token>.from(tokens.map((a) {
-        var t = Token.fromJson(a);
-        t.stats = TokenBucket.fromJson(jsonmap['stats'][t.address]);
-        return t;
-      }));
+      return List<TokenBucket>.from(tokens.map((a) => TokenBucket.fromJson(a)));
     } catch (err, stack) {
       print(err);
       print(stack);
@@ -74,11 +68,11 @@ class Api {
     }
   }
 
-  static Future<List<Pair>> fetchPairs() async {
+  static Future<List<PairBucket>> fetchPairs() async {
     DateTime now = DateTime.now();
     DateTime dStart = now.subtract(Duration(hours: 24));
     String url =
-        "$apiUrl/pairs?start_time=${rfc3339(dStart)}&end_time=${rfc3339(now)}&interval=24h";
+        "$apiUrl/stats/pairs?time_start=${rfc3339(dStart)}&time_end=${rfc3339(now)}&time_frame=24h";
     http.Response response;
     try {
       response = await http.get(url);
@@ -92,18 +86,9 @@ class Api {
     try {
       final jsonmap = json.decode(response.body);
       // print("jsonmap: $jsonmap");
-      final tokens = jsonmap['pairs'];
-      final stats = jsonmap['stats'];
-      // print("STATS XXX: $stats");
-      if (tokens == null) return null;
-      return List<Pair>.from(tokens.map((a) {
-        var p = Pair.fromJson(a);
-        // print("ADDRESS: ${p.address}");
-        var s = stats[p.address];
-        // print("STATS: $s");
-        p.stats = PairBucket.fromJson(s);
-        return p;
-      }));
+      final pairs = jsonmap['stats'];
+      if (pairs == null) return null;
+      return List<PairBucket>.from(pairs.map((a) => PairBucket.fromJson(a)));
     } catch (err, stack) {
       print(err);
       print(stack);
@@ -112,7 +97,7 @@ class Api {
   }
 
   static Future<List<TokenBucket>> fetchTokenBuckets(String token) async {
-    String url = apiUrl + '/tokens/' + token + '/buckets';
+    String url = apiUrl + '/stats/tokens/' + token;
     http.Response response;
     try {
       response = await http.get(url);
@@ -125,16 +110,16 @@ class Api {
     }
     try {
       final jsonmap = json.decode(response.body);
-      final volume = jsonmap['buckets'];
-      if (volume == null) return null;
-      return List<TokenBucket>.from(volume.map((a) => TokenBucket.fromJson(a)));
+      final stats = jsonmap['stats'];
+      if (stats== null) return null;
+      return List<TokenBucket>.from(stats.map((a) => TokenBucket.fromJson(a)));
     } catch (err) {
       throw err;
     }
   }
 
   // static Future<List<PairVolume>> fetchPairVolume(String pair) async {
-  //   String url = apiUrl + '/pairs/' + pair + '/volume';
+  //   String url = apiUrl + '/stats/pairs/' + pair;
   //   http.Response response;
   //   try {
   //     response = await http.get(url);
@@ -147,7 +132,7 @@ class Api {
   //   }
   //   try {
   //     final jsonmap = json.decode(response.body);
-  //     final volume = jsonmap['overTime'];
+  //     final volume = jsonmap['stats'];
   //     if (volume == null) return null;
   //     return List<PairVolume>.from(volume.map((a) => PairVolume.fromJson(a)));
   //   } catch (err) {
@@ -156,7 +141,7 @@ class Api {
   // }
 
   static Future<List<PairBucket>> fetchPairBuckets(String pair) async {
-    String url = apiUrl + '/pairs/' + pair + '/buckets';
+    String url = apiUrl + '/stats/pairs/' + pair;
     http.Response response;
     try {
       response = await http.get(url);

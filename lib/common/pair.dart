@@ -25,8 +25,8 @@ class Pair {
   Pair.fromJson(Map<String, dynamic> json)
       : address = json['address'],
         index = json['index'],
-        token0 = Token.fromJson(json['token0']),
-        token1 = Token.fromJson(json['token1']),
+        token0 = json['token0'],
+        token1 = json['token1'],
         totalSupply = json['totalSupply'] != null
             ? Decimal.parse(json['totalSupply'])
             : Decimal.zero;
