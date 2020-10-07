@@ -116,7 +116,7 @@ class _VolumeChartState extends State<VolumeChart> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       const Text(
-                        'Volume (24hr)',
+                        'Volume (60d)',
                         style: TextStyle(
                           color: Color(0xff827daa),
                           fontSize: 16,

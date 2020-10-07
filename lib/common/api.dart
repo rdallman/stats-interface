@@ -21,7 +21,7 @@ class Api {
     DateTime now = DateTime.now();
     DateTime dStart = now.subtract(Duration(days: 60));
     String url =
-        "$apiUrl/totals?start_time=${rfc3339(dStart)}&end_time=${rfc3339(now)}&interval=24h";
+        "$apiUrl/totals?start_time=${rfc3339(dStart)}&end_time=${rfc3339(now)}&interval=1440h";
     http.Response response;
     try {
       response = await http.get(url);
