@@ -9,6 +9,7 @@ class TokenBucket {
   Decimal amountOut;
   Decimal priceUSD;
   Decimal volumeUSD;
+  Decimal reserve;
   Decimal liquidityUSD;
 
   TokenBucket(
@@ -17,12 +18,14 @@ class TokenBucket {
       Decimal amountIn,
       Decimal amountOut,
       Decimal priceUSD,
+      Decimal reserve,
       Decimal volumeUSD})
       : this.timeStamp = timeStamp,
         this.volumeUSD = volumeUSD,
         this.amountIn = amountIn,
         this.amountOut = amountOut,
         this.priceUSD = priceUSD,
+        this.reserve = reserve,
         this.symbol = symbol;
 
   TokenBucket.fromJson(Map<String, dynamic> json)
@@ -32,6 +35,7 @@ class TokenBucket {
         amountIn = Globals.toDec(json['amountIn']),
         amountOut = Globals.toDec(json['amountOut']),
         priceUSD = Globals.toDec(json['priceUSD']),
+        reserve = Globals.toDec(json['reserve']),
         liquidityUSD = Globals.toDec(json['liquidityUSD']);
 
   Map<String, dynamic> toJson() => {
@@ -40,6 +44,7 @@ class TokenBucket {
         'amountIn': amountIn,
         'amountOut': amountOut,
         'priceUSD': priceUSD,
+        'reserve': reserve,
         'symbol': symbol
       };
 }

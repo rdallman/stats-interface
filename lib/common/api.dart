@@ -9,6 +9,8 @@ import 'total.dart';
 const bool prod = const bool.fromEnvironment('dart.vm.product');
 
 class Api {
+  // static final String apiUrl = 'https://goswap-stats-xcefncm5jq-uc.a.run.app';
+
   static final String apiUrl = 'https://stats-api.goswap.exchange';
 
   static String rfc3339(DateTime dt) {

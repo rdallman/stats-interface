@@ -3,6 +3,7 @@ import 'package:goswapinfo/common/api.dart';
 import 'package:goswapinfo/common/globals.dart';
 import 'package:goswapinfo/common/styles.dart';
 import 'package:goswapinfo/common/token.dart';
+import 'package:goswapinfo/pages/token_page.dart';
 
 class TopTokens extends StatefulWidget {
   @override
@@ -61,7 +62,35 @@ class _TopTokensState extends State<TopTokens> {
     for (final p in tokens) {
       rows.add(DataRow(
         cells: <DataCell>[
-          DataCell(Text(p.toString())),
+          DataCell(
+            InkWell(
+              child: Text(
+                p.toString(),
+                style: TextStyle(
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                  decorationColor: Colors.blue,
+                  // decorationStyle: TextDecorationStyle.wavy,
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return TokenPage(
+                        tokenName: p.toString(),
+                        liquidity: Globals.formatCurrency(p.stats.liquidityUSD),
+                        volume: Globals.formatCurrency(p.stats.volumeUSD),
+                        price: Globals.formatCurrency(p.stats.priceUSD),
+                        address: p.address,
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
           DataCell(Text('${Globals.formatCurrency(p.stats.liquidityUSD)}')),
           DataCell(Text('${Globals.formatCurrency(p.stats.volumeUSD)}')),
           DataCell(Text('${Globals.formatCurrency(p.stats.priceUSD)}')),

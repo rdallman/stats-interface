@@ -30,7 +30,7 @@ packages:
     source: hosted
     version: "1.2.0-nullsafety.1"
   charts_common:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: charts_common
       url: "https://pub.dartlang.org"
