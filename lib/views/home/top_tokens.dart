@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:goswapinfo/common/api.dart';
 import 'package:goswapinfo/common/globals.dart';
 import 'package:goswapinfo/common/styles.dart';
-import 'package:goswapinfo/common/token.dart';
+import 'package:goswapinfo/common/token_bucket.dart';
 import 'package:goswapinfo/pages/token_page.dart';
 
 class TopTokens extends StatefulWidget {
@@ -11,12 +11,12 @@ class TopTokens extends StatefulWidget {
 }
 
 class _TopTokensState extends State<TopTokens> {
-  Future<List<Token>> pairsF;
+  Future<List<TokenBucket>> tokensF;
 
   @override
   initState() {
     super.initState();
-    pairsF = Api.fetchTokens();
+    tokensF = Api.fetchTokensStats();
   }
 
   @override
@@ -35,10 +35,10 @@ class _TopTokensState extends State<TopTokens> {
         const SizedBox(
           height: 37,
         ),
-        FutureBuilder<List<Token>>(
-            future: pairsF, // a previously-obtained Future<String> or null
+        FutureBuilder<List<TokenBucket>>(
+            future: tokensF, // a previously-obtained Future<String> or null
             builder:
-                (BuildContext context, AsyncSnapshot<List<Token>> snapshot) {
+                (BuildContext context, AsyncSnapshot<List<TokenBucket>> snapshot) {
               // print(snapshot);
               // print(snapshot.data);
               if (snapshot.hasError) {
@@ -57,7 +57,7 @@ class _TopTokensState extends State<TopTokens> {
     );
   }
 
-  Widget table(BuildContext context, List<Token> tokens) {
+  Widget table(BuildContext context, List<TokenBucket> tokens) {
     List<DataRow> rows = [];
     for (final p in tokens) {
       rows.add(DataRow(
@@ -80,9 +80,9 @@ class _TopTokensState extends State<TopTokens> {
                     builder: (context) {
                       return TokenPage(
                         tokenName: p.toString(),
-                        liquidity: Globals.formatCurrency(p.stats.liquidityUSD),
-                        volume: Globals.formatCurrency(p.stats.volumeUSD),
-                        price: Globals.formatCurrency(p.stats.priceUSD),
+                        liquidity: Globals.formatCurrency(p.liquidityUSD),
+                        volume: Globals.formatCurrency(p.volumeUSD),
+                        price: Globals.formatCurrency(p.priceUSD),
                         address: p.address,
                       );
                     },
@@ -91,9 +91,9 @@ class _TopTokensState extends State<TopTokens> {
               },
             ),
           ),
-          DataCell(Text('${Globals.formatCurrency(p.stats.liquidityUSD)}')),
-          DataCell(Text('${Globals.formatCurrency(p.stats.volumeUSD)}')),
-          DataCell(Text('${Globals.formatCurrency(p.stats.priceUSD)}')),
+          DataCell(Text('${Globals.formatCurrency(p.liquidityUSD)}')),
+          DataCell(Text('${Globals.formatCurrency(p.volumeUSD)}')),
+          DataCell(Text('${Globals.formatCurrency(p.priceUSD)}')),
         ],
       ));
     }

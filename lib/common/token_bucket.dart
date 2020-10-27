@@ -5,6 +5,7 @@ import 'globals.dart';
 class TokenBucket {
   DateTime timeStamp;
   String symbol;
+  String address;
   Decimal amountIn;
   Decimal amountOut;
   Decimal priceUSD;
@@ -15,6 +16,7 @@ class TokenBucket {
   TokenBucket(
       {DateTime timeStamp,
       String symbol,
+      String address,
       Decimal amountIn,
       Decimal amountOut,
       Decimal priceUSD,
@@ -31,6 +33,7 @@ class TokenBucket {
   TokenBucket.fromJson(Map<String, dynamic> json)
       : timeStamp = json['time'] != null ? DateTime.parse(json['time']) : null,
         symbol = json['symbol'],
+        address = json['address'],
         volumeUSD = Globals.toDec(json['volumeUSD']),
         amountIn = Globals.toDec(json['amountIn']),
         amountOut = Globals.toDec(json['amountOut']),
@@ -45,6 +48,11 @@ class TokenBucket {
         'amountOut': amountOut,
         'priceUSD': priceUSD,
         'reserve': reserve,
-        'symbol': symbol
+        'symbol': symbol,
+        'address': address
       };
+
+  String toString() {
+    return "${symbol}";
+  }
 }

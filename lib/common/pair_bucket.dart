@@ -16,6 +16,7 @@ class PairBucket {
   //     "volumeUSD": "7009.00015740561960383837348579787573"
   DateTime timeStamp;
   String pair;
+  String address;
   Decimal amount0In;
   Decimal amount0Out;
   Decimal price0USD;
@@ -32,6 +33,7 @@ class PairBucket {
   PairBucket(
       {DateTime timeStamp,
       String pair,
+      String address,
       Decimal amount0In,
       Decimal amount0Out,
       Decimal price0USD,
@@ -56,6 +58,7 @@ class PairBucket {
   PairBucket.fromJson(Map<String, dynamic> json)
       : timeStamp = json['time'] != null ? DateTime.parse(json['time']) : null,
         pair = json['pair'],
+        address = json['address'],
         volumeUSD = Globals.toDec(json['volumeUSD']),
         amount0In = Globals.toDec(json['amount0In']),
         amount0Out = Globals.toDec(json['amount0Out']),
@@ -78,8 +81,13 @@ class PairBucket {
         'amount1Out': amount1Out,
         'price1USD': price1USD,
         'pair': pair,
+        'address': address,
         'totalSupply': totalSupply,
         'reserve0': reserve0,
         'reserve1': reserve1,
       };
+
+  String toString() {
+    return "${pair}";
+  }
 }

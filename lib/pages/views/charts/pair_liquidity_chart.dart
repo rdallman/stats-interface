@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:goswapinfo/common/api.dart';
 import 'package:goswapinfo/common/globals.dart';
-import 'package:goswapinfo/common/pair_volume.dart';
+import 'package:goswapinfo/common/pair_bucket.dart';
 import 'package:goswapinfo/common/styles.dart';
 import 'package:intl/intl.dart';
 import 'package:charts_flutter/flutter.dart' as charts;

@@ -1,6 +1,6 @@
 import 'package:goswapinfo/common/token.dart';
-import 'package:goswapinfo/common/volume.dart';
-import 'package:goswapinfo/common/pair_volume.dart';
+import 'package:goswapinfo/common/token_bucket.dart';
+import 'package:goswapinfo/common/pair_bucket.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'pair.dart';
@@ -9,9 +9,8 @@ import 'total.dart';
 const bool prod = const bool.fromEnvironment('dart.vm.product');
 
 class Api {
-  // static final String apiUrl = 'https://goswap-stats-xcefncm5jq-uc.a.run.app';
-
-  static final String apiUrl = 'https://stats-api.goswap.exchange';
+  //static final String apiUrl = 'http://localhost:8080/v1';
+  static final String apiUrl = 'https://stats-api.goswap.exchange/v1';
 
   static String rfc3339(DateTime dt) {
     return dt.toUtc().toIso8601String();
@@ -21,7 +20,7 @@ class Api {
     DateTime now = DateTime.now();
     DateTime dStart = now.subtract(Duration(days: 60));
     String url =
-        "$apiUrl/totals?start_time=${rfc3339(dStart)}&end_time=${rfc3339(now)}&interval=24h";
+        "$apiUrl/stats?time_start=${rfc3339(dStart)}&time_end=${rfc3339(now)}&time_frame=24h";
     http.Response response;
     try {
       response = await http.get(url);
@@ -34,7 +33,7 @@ class Api {
     }
     try {
       final jsonmap = json.decode(response.body);
-      final totals = jsonmap['overTime'];
+      final totals = jsonmap['stats'];
       if (totals == null) return null;
       return List<Total>.from(totals.map((a) => Total.fromJson(a)));
     } catch (err) {
@@ -46,7 +45,7 @@ class Api {
     DateTime now = DateTime.now();
     DateTime dStart = now.subtract(Duration(hours: 24));
     String url =
-        "$apiUrl/tokens?start_time=${rfc3339(dStart)}&end_time=${rfc3339(now)}&interval=24h";
+        "$apiUrl/tokens";
     http.Response response;
     try {
       response = await http.get(url);
@@ -59,14 +58,36 @@ class Api {
     }
     try {
       final jsonmap = json.decode(response.body);
-      // print("jsonmap: $jsonmap");
       final tokens = jsonmap['tokens'];
       if (tokens == null) return null;
-      return List<Token>.from(tokens.map((a) {
-        var t = Token.fromJson(a);
-        t.stats = TokenBucket.fromJson(jsonmap['stats'][t.address]);
-        return t;
-      }));
+      return List<Token>.from(tokens.map((a) => Token.fromJson(a)));
+    } catch (err, stack) {
+      print(err);
+      print(stack);
+      throw err;
+    }
+  }
+
+  static Future<List<TokenBucket>> fetchTokensStats() async {
+    DateTime now = DateTime.now();
+    DateTime dStart = now.subtract(Duration(hours: 24));
+    String url =
+        "$apiUrl/stats/tokens?time_start=${rfc3339(dStart)}&time_end=${rfc3339(now)}&time_frame=24h&sort=-liquidityUSD";
+    http.Response response;
+    try {
+      response = await http.get(url);
+    } catch (err) {
+      throw err;
+    }
+    if (response.statusCode != 200) {
+      var e = ErrorResponse.parse(response);
+      throw e;
+    }
+    try {
+      final jsonmap = json.decode(response.body);
+      final stats = jsonmap['stats'];
+      if (stats == null) return null;
+      return List<TokenBucket>.from(stats.map((a) => TokenBucket.fromJson(a)));
     } catch (err, stack) {
       print(err);
       print(stack);
@@ -78,7 +99,7 @@ class Api {
     DateTime now = DateTime.now();
     DateTime dStart = now.subtract(Duration(hours: 24));
     String url =
-        "$apiUrl/pairs?start_time=${rfc3339(dStart)}&end_time=${rfc3339(now)}&interval=24h";
+        "$apiUrl/stats/pairs";
     http.Response response;
     try {
       response = await http.get(url);
@@ -91,19 +112,36 @@ class Api {
     }
     try {
       final jsonmap = json.decode(response.body);
-      // print("jsonmap: $jsonmap");
-      final tokens = jsonmap['pairs'];
+      final pairs = jsonmap['pairs'];
+      if (pairs == null) return null;
+      return List<Pair>.from(pairs.map((a) => Pair.fromJson(a)));
+    } catch (err, stack) {
+      print(err);
+      print(stack);
+      throw err;
+    }
+  }
+
+  static Future<List<PairBucket>> fetchPairsStats() async {
+    DateTime now = DateTime.now();
+    DateTime dStart = now.subtract(Duration(hours: 24));
+    String url =
+        "$apiUrl/stats/pairs?time_start=${rfc3339(dStart)}&time_end=${rfc3339(now)}&time_frame=24h&sort=-liquidityUSD";
+    http.Response response;
+    try {
+      response = await http.get(url);
+    } catch (err) {
+      throw err;
+    }
+    if (response.statusCode != 200) {
+      var e = ErrorResponse.parse(response);
+      throw e;
+    }
+    try {
+      final jsonmap = json.decode(response.body);
       final stats = jsonmap['stats'];
-      // print("STATS XXX: $stats");
-      if (tokens == null) return null;
-      return List<Pair>.from(tokens.map((a) {
-        var p = Pair.fromJson(a);
-        // print("ADDRESS: ${p.address}");
-        var s = stats[p.address];
-        // print("STATS: $s");
-        p.stats = PairBucket.fromJson(s);
-        return p;
-      }));
+      if (stats == null) return null;
+      return List<PairBucket>.from(stats.map((a) => PairBucket.fromJson(a)));
     } catch (err, stack) {
       print(err);
       print(stack);
@@ -112,7 +150,10 @@ class Api {
   }
 
   static Future<List<TokenBucket>> fetchTokenBuckets(String token) async {
-    String url = apiUrl + '/tokens/' + token + '/buckets';
+    DateTime now = DateTime.now();
+    DateTime dStart = now.subtract(Duration(days: 60));
+    String url =
+        "$apiUrl/stats/tokens/$token?time_start=${rfc3339(dStart)}&time_end=${rfc3339(now)}&time_frame=24h";
     http.Response response;
     try {
       response = await http.get(url);
@@ -125,7 +166,7 @@ class Api {
     }
     try {
       final jsonmap = json.decode(response.body);
-      final volume = jsonmap['buckets'];
+      final volume = jsonmap['stats'];
       if (volume == null) return null;
       return List<TokenBucket>.from(volume.map((a) => TokenBucket.fromJson(a)));
     } catch (err) {
@@ -133,30 +174,8 @@ class Api {
     }
   }
 
-  // static Future<List<PairVolume>> fetchPairVolume(String pair) async {
-  //   String url = apiUrl + '/pairs/' + pair + '/volume';
-  //   http.Response response;
-  //   try {
-  //     response = await http.get(url);
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  //   if (response.statusCode != 200) {
-  //     var e = ErrorResponse.parse(response);
-  //     throw e;
-  //   }
-  //   try {
-  //     final jsonmap = json.decode(response.body);
-  //     final volume = jsonmap['overTime'];
-  //     if (volume == null) return null;
-  //     return List<PairVolume>.from(volume.map((a) => PairVolume.fromJson(a)));
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // }
-
-  static Future<List<PairBucket>> fetchPairBuckets(String pair) async {
-    String url = apiUrl + '/pairs/' + pair + '/buckets';
+  static Future<Pair> fetchPair(String pair) async {
+    String url = apiUrl + '/pairs/' + pair;
     http.Response response;
     try {
       response = await http.get(url);
@@ -169,14 +188,38 @@ class Api {
     }
     try {
       final jsonmap = json.decode(response.body);
-      final volume = jsonmap['buckets'];
+      final pair = jsonmap['pair'];
+      if (pair == null) return null;
+      return Pair.fromJson(pair);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static Future<List<PairBucket>> fetchPairBuckets(String pair) async {
+    DateTime now = DateTime.now();
+    DateTime dStart = now.subtract(Duration(days: 60));
+    String url =
+        "$apiUrl/stats/pairs/$pair?time_start=${rfc3339(dStart)}&time_end=${rfc3339(now)}&time_frame=24h";
+    http.Response response;
+    try {
+      response = await http.get(url);
+    } catch (err) {
+      throw err;
+    }
+    if (response.statusCode != 200) {
+      var e = ErrorResponse.parse(response);
+      throw e;
+    }
+    try {
+      final jsonmap = json.decode(response.body);
+      final volume = jsonmap['stats'];
       if (volume == null) return null;
       return List<PairBucket>.from(volume.map((a) => PairBucket.fromJson(a)));
     } catch (err) {
       throw err;
     }
   }
-  //TODO:https://goswap-stats-xcefncm5jq-uc.a.run.app/tokens/WGO/liquidity - empty results as of now
 }
 
 class ErrorResponse {

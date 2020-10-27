@@ -1,22 +1,19 @@
 import 'package:decimal/decimal.dart';
 
-import 'pair_volume.dart';
-import 'token.dart';
-
 class Pair {
   int index;
   String address;
+  String pair;
 
-  Token token0;
-  Token token1;
+  String token0;
+  String token1;
 
   Decimal totalSupply;
-
-  PairBucket stats;
 
   Pair({
     this.index,
     this.address,
+    this.pair,
     this.token0,
     this.token1,
     thistotalSupply,
@@ -25,8 +22,9 @@ class Pair {
   Pair.fromJson(Map<String, dynamic> json)
       : address = json['address'],
         index = json['index'],
-        token0 = Token.fromJson(json['token0']),
-        token1 = Token.fromJson(json['token1']),
+        pair = json['pair'],
+        token0 = json['token0'],
+        token1 = json['token1'],
         totalSupply = json['totalSupply'] != null
             ? Decimal.parse(json['totalSupply'])
             : Decimal.zero;
@@ -34,12 +32,13 @@ class Pair {
   Map<String, dynamic> toJson() => {
         'index': index,
         'address': address,
+        'pair': pair,
         'token0': token0,
         'token1': token1,
         'totalSupply': totalSupply,
       };
 
   String toString() {
-    return "${token0.symbol}-${token1.symbol}";
+    return "${pair}";
   }
 }

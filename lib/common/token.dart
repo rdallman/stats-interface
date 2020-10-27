@@ -1,7 +1,5 @@
 import 'package:decimal/decimal.dart';
 
-import 'volume.dart';
-
 class Token {
   // "tokens": [
   //   {
@@ -15,40 +13,28 @@ class Token {
   String name;
   String symbol;
   int decimals;
-  Decimal totalSupply;
-  Decimal cMCPrice;
-
-  TokenBucket stats;
 
   Token(
       {String address,
       String name,
       String symbol,
-      int decimals,
-      Decimal totalSupply,
-      Decimal cMCPrice})
+      int decimals})
       : this.address = address,
         this.name = name,
         this.symbol = symbol,
-        this.decimals = decimals,
-        this.totalSupply = totalSupply,
-        this.cMCPrice = cMCPrice;
+        this.decimals = decimals;
 
   Token.fromJson(Map<String, dynamic> json)
       : address = json['address'],
         name = json['name'],
         symbol = json['symbol'],
-        decimals = json['decimals'],
-        totalSupply = Decimal.parse(json['totalSupply']),
-        cMCPrice = Decimal.parse(json['CMCPrice']);
+        decimals = json['decimals'];
 
   Map<String, dynamic> toJson() => {
         'address': address,
         'name': name,
         'symbol': symbol,
         'decimals': decimals,
-        'totalSupply': totalSupply,
-        'CMCPrice': cMCPrice,
       };
 
   String toString() {

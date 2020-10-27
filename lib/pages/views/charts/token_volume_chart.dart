@@ -5,7 +5,7 @@ import 'package:goswapinfo/common/styles.dart';
 import 'package:decimal/decimal.dart';
 import 'package:intl/intl.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:goswapinfo/common/volume.dart';
+import 'package:goswapinfo/common/token_bucket.dart';
 
 class TokenVolumeChart extends StatefulWidget {
   final String tokenAddress;
