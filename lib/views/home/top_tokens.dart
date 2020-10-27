@@ -84,6 +84,7 @@ class _TopTokensState extends State<TopTokens> {
                         volume: Globals.formatCurrency(p.volumeUSD),
                         price: Globals.formatCurrency(p.priceUSD),
                         address: p.address,
+                        reserve: p.stats.reserve.toStringAsFixed(0),
                       );
                     },
                   ),
