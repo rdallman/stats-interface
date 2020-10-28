@@ -5,7 +5,6 @@ import 'package:goswapinfo/common/api.dart';
 import 'package:goswapinfo/common/pair_bucket.dart';
 import 'package:goswapinfo/common/styles.dart';
 import 'package:goswapinfo/pages/pair_page.dart';
-import 'package:goswapinfo/pages/token_page.dart';
 
 class TopPairs extends StatefulWidget {
   @override
@@ -88,9 +87,18 @@ class _TopPairsState extends State<TopPairs> {
                     builder: (context) {
                       return PairPage(
                         pair: p.toString(),
-                        liquidity: Globals.formatCurrency(p.liquidityUSD),
-                        volume: Globals.formatCurrency(p.volumeUSD),
-                        pairAddress: p.address,
+                        liquidity: Globals.formatCurrency(p.stats.liquidityUSD),
+                        volume: Globals.formatCurrency(p.stats.volumeUSD),
+                        pairAdress: p.address,
+                        token0Address: p.token0.address,
+                        token1Address: p.token1.address,
+                        token0Symbol: p.token0.symbol,
+                        token1Symbol: p.token1.symbol,
+                        token0Reserve: p.stats.reserve0.toStringAsFixed(0),
+                        token1Reserve: p.stats.reserve1.toStringAsFixed(0),
+//                        liquidity: Globals.formatCurrency(p.liquidityUSD),
+  //                      volume: Globals.formatCurrency(p.volumeUSD),
+    //                    pairAddress: p.address,
                       );
                     },
                   ),
@@ -104,6 +112,7 @@ class _TopPairsState extends State<TopPairs> {
         ],
       ));
     }
+
     return DataTable(
       columns: const <DataColumn>[
         DataColumn(

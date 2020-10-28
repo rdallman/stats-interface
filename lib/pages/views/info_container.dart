@@ -1,17 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:goswapinfo/common/globals.dart';
 
 class InfoContainer extends StatelessWidget {
   final String value;
   final String title;
   final bool copy;
+  final String tokenAddress;
+  final String token1Address;
   InfoContainer({
-    this.value,
+    @required this.value,
+    @required this.title,
     this.copy = true,
-    this.title,
+    this.tokenAddress,
+    this.token1Address,
   });
   @override
   Widget build(BuildContext context) {
+    IconButton copyValue = IconButton(
+      icon: Icon(Icons.content_copy_rounded),
+      tooltip: 'Copy',
+      splashRadius: 20.0,
+      onPressed: () {
+        Clipboard.setData(
+          ClipboardData(text: value),
+        );
+      },
+    );
+    IconButton openPage = IconButton(
+      icon: Icon(Icons.open_in_new),
+      tooltip: 'Open external link',
+      splashRadius: 20.0,
+      onPressed: () {
+        launch(
+            "${Globals.uiURL}/#/swap?inputCurrency=$tokenAddress&outputCurrency=$token1Address");
+      },
+    );
+
     String ellipsis = '...';
     return Container(
       constraints: BoxConstraints(maxWidth: 150),
@@ -35,16 +61,7 @@ class InfoContainer extends StatelessWidget {
                 ),
                 textAlign: TextAlign.start,
               ),
-              IconButton(
-                icon: Icon(Icons.content_copy_rounded),
-                tooltip: 'Copy',
-                splashRadius: 20.0,
-                onPressed: () {
-                  Clipboard.setData(
-                    ClipboardData(text: value),
-                  );
-                },
-              ),
+              copy ? copyValue : openPage,
             ],
           ),
         ],

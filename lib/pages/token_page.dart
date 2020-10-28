@@ -5,6 +5,7 @@ import 'package:goswapinfo/pages/views/info_container.dart';
 import 'package:goswapinfo/pages/views/charts/token_price_chart.dart';
 import 'package:goswapinfo/pages/views/charts/token_volume_chart.dart';
 import 'package:goswapinfo/pages/views/charts/token_liquidity_chart.dart';
+import 'package:goswapinfo/common/globals.dart';
 
 class TokenPage extends StatefulWidget {
   final String tokenName;
@@ -12,12 +13,14 @@ class TokenPage extends StatefulWidget {
   final String volume;
   final String price;
   final String address;
+  final String reserve;
   TokenPage({
     this.address,
     this.tokenName,
     this.liquidity,
     this.volume,
     this.price,
+    this.reserve,
   });
   @override
   _TokenPageState createState() => _TokenPageState();
@@ -32,14 +35,15 @@ class _TokenPageState extends State<TokenPage> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     double appBarHeight = AppBar().preferredSize.height;
-    // Could refactor this code
+
+    String text = Globals.formatCurrency(Globals.toDec(widget.reserve));
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Row(
           children: [
             SizedBox(height: 30, child: Image.asset('assets/logo-white.png')),
-            //  Text("Stats")
           ],
         ),
         actions: <Widget>[
@@ -75,14 +79,26 @@ class _TokenPageState extends State<TokenPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(
-                    '${widget.tokenName} Token',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 2),
-                    textAlign: TextAlign.center,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${widget.tokenName} Token',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 2),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Image.network(
+                        'https://raw.githubusercontent.com/goswap/cryptocurrency-icons/master/128/color/${widget.tokenName.toLowerCase()}.png',
+                        height: 40,
+                      ),
+                    ],
                   ),
                   const SizedBox(
                     height: 10.0,
@@ -100,6 +116,10 @@ class _TokenPageState extends State<TokenPage> {
                       ReusableContainer(
                         title: 'Price USD',
                         value: widget.price,
+                      ),
+                      ReusableContainer(
+                        title: 'Reserve Amount',
+                        value: text.substring(1, text.length - 3),
                       ),
                     ],
                   ),
@@ -216,6 +236,7 @@ class _TokenPageState extends State<TokenPage> {
                               value: widget.tokenName,
                               title: 'Token Name',
                               copy: false,
+                              tokenAddress: widget.address,
                             ),
                             InfoContainer(
                               value: widget.address,
