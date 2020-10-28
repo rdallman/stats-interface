@@ -40,11 +40,9 @@ class PairLiquidityChartState extends State<PairLiquidityChart> {
             id: 'Liquidity',
             colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
             domainFn: (PairBucket sales, _) => sales.timeStamp,
-            measureFn: (PairBucket sales, _) {
-              var f = (sales.reserve0.toDouble() * sales.price0USD.toDouble()) +
-                  (sales.reserve1.toDouble() * sales.price1USD.toDouble());
-              return f;
-            },
+            measureFn: (PairBucket sales, _) =>
+                (sales.reserve0.toDouble() * sales.price0USD.toDouble()) +
+                (sales.reserve1.toDouble() * sales.price1USD.toDouble()),
             data: data,
           );
           seriesList.add(s0);

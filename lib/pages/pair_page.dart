@@ -39,9 +39,9 @@ class _PairPageState extends State<PairPage> {
 
   @override
   Widget build(BuildContext context) {
-
     // TODO idk what I'm doing but we should conditionally return a future builder only
     // if some fields we need aren't filled in, otherwise we can just return the thing.
+
     return FutureBuilder<Pair>(
       future: pairF,
       builder: (context, snapshot) {
@@ -120,12 +120,6 @@ class _PairPageState extends State<PairPage> {
                         ),
                         Wrap(
                           children: [
-                            InfoContainer(
-                              value: widget.pair,
-                              title: 'Pair Name',
-                              copy: false,
-                              token1Address: widget.token1Address,
-                              tokenAddress: widget.token0Address,
                             ReusableContainer(
                               title: 'Liquidity',
                               value: widget.liquidity,
