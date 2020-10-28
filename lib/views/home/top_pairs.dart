@@ -44,8 +44,8 @@ class _TopPairsState extends State<TopPairs> {
         ),
         FutureBuilder<List<PairBucket>>(
             future: pairsF, // a previously-obtained Future<String> or null
-            builder:
-                (BuildContext context, AsyncSnapshot<List<PairBucket>> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<List<PairBucket>> snapshot) {
               // print(snapshot);
               // print(snapshot.data);
               if (snapshot.hasError) {
@@ -53,6 +53,9 @@ class _TopPairsState extends State<TopPairs> {
               }
               if (snapshot.hasData) {
                 // print("DATA: ${snapshot.data}");
+                if (snapshot.data.length == 0) {
+                  return Text("No pairs found");
+                }
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: table(context, snapshot.data),
@@ -87,18 +90,18 @@ class _TopPairsState extends State<TopPairs> {
                     builder: (context) {
                       return PairPage(
                         pair: p.toString(),
-                        liquidity: Globals.formatCurrency(p.stats.liquidityUSD),
-                        volume: Globals.formatCurrency(p.stats.volumeUSD),
-                        pairAdress: p.address,
-                        token0Address: p.token0.address,
-                        token1Address: p.token1.address,
-                        token0Symbol: p.token0.symbol,
-                        token1Symbol: p.token1.symbol,
-                        token0Reserve: p.stats.reserve0.toStringAsFixed(0),
-                        token1Reserve: p.stats.reserve1.toStringAsFixed(0),
+                        liquidity: Globals.formatCurrency(p.liquidityUSD),
+                        volume: Globals.formatCurrency(p.volumeUSD),
+                        pairAddress: p.address,
+                        // token0Address: p.token0,
+                        // token1Address: p.token1,
+                        // token0Symbol: p.token0.symbol,
+                        // token1Symbol: p.token1.symbol,
+                        // token0Reserve: p.stats.reserve0.toStringAsFixed(0),
+                        // token1Reserve: p.stats.reserve1.toStringAsFixed(0),
 //                        liquidity: Globals.formatCurrency(p.liquidityUSD),
-  //                      volume: Globals.formatCurrency(p.volumeUSD),
-    //                    pairAddress: p.address,
+                        //                      volume: Globals.formatCurrency(p.volumeUSD),
+                        //                    pairAddress: p.address,
                       );
                     },
                   ),

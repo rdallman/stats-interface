@@ -37,8 +37,8 @@ class _TopTokensState extends State<TopTokens> {
         ),
         FutureBuilder<List<TokenBucket>>(
             future: tokensF, // a previously-obtained Future<String> or null
-            builder:
-                (BuildContext context, AsyncSnapshot<List<TokenBucket>> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<List<TokenBucket>> snapshot) {
               // print(snapshot);
               // print(snapshot.data);
               if (snapshot.hasError) {
@@ -46,6 +46,9 @@ class _TopTokensState extends State<TopTokens> {
               }
               if (snapshot.hasData) {
                 // print("DATA: ${snapshot.data}");
+                if (snapshot.data.length == 0) {
+                  return Text("No tokens found");
+                }
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: table(context, snapshot.data),
@@ -84,7 +87,7 @@ class _TopTokensState extends State<TopTokens> {
                         volume: Globals.formatCurrency(p.volumeUSD),
                         price: Globals.formatCurrency(p.priceUSD),
                         address: p.address,
-                        reserve: p.stats.reserve.toStringAsFixed(0),
+                        reserve: p.reserve.toStringAsFixed(0),
                       );
                     },
                   ),

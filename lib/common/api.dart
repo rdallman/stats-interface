@@ -44,8 +44,7 @@ class Api {
   static Future<List<Token>> fetchTokens() async {
     DateTime now = DateTime.now();
     DateTime dStart = now.subtract(Duration(hours: 24));
-    String url =
-        "$apiUrl/tokens";
+    String url = "$apiUrl/tokens";
     http.Response response;
     try {
       response = await http.get(url);
@@ -98,8 +97,7 @@ class Api {
   static Future<List<Pair>> fetchPairs() async {
     DateTime now = DateTime.now();
     DateTime dStart = now.subtract(Duration(hours: 24));
-    String url =
-        "$apiUrl/stats/pairs";
+    String url = "$apiUrl/stats/pairs";
     http.Response response;
     try {
       response = await http.get(url);
@@ -139,8 +137,10 @@ class Api {
     }
     try {
       final jsonmap = json.decode(response.body);
+      // print(jsonmap);
       final stats = jsonmap['stats'];
-      if (stats == null) return null;
+      if (stats == null)
+        return []; // shouldn't return null here, or it just spins forever
       return List<PairBucket>.from(stats.map((a) => PairBucket.fromJson(a)));
     } catch (err, stack) {
       print(err);
@@ -166,8 +166,9 @@ class Api {
     }
     try {
       final jsonmap = json.decode(response.body);
+      // print(jsonmap);
       final volume = jsonmap['stats'];
-      if (volume == null) return null;
+      if (volume == null) return [];
       return List<TokenBucket>.from(volume.map((a) => TokenBucket.fromJson(a)));
     } catch (err) {
       throw err;

@@ -39,7 +39,6 @@ class _PairPageState extends State<PairPage> {
 
   @override
   Widget build(BuildContext context) {
-
     // TODO idk what I'm doing but we should conditionally return a future builder only
     // if some fields we need aren't filled in, otherwise we can just return the thing.
     return FutureBuilder<Pair>(
@@ -51,16 +50,17 @@ class _PairPageState extends State<PairPage> {
         if (snapshot.hasData) {
           // TODO this is a mess
           var data = snapshot.data;
+          Pair pair = data;
           var token0Address = data.token0;
           var token1Address = data.token1;
 
           var token0Symbol = widget.pair.split("-")[0];
           var token1Symbol = widget.pair.split("-")[1];
 
-          String fees =
-              (double.parse(widget.volume.replaceAll(RegExp(r'[^\w\s .-]+'), '')) *
-                      0.003)
-                  .toStringAsFixed(2);
+          String fees = (double.parse(
+                      widget.volume.replaceAll(RegExp(r'[^\w\s .-]+'), '')) *
+                  0.003)
+              .toStringAsFixed(2);
           var screenSize = MediaQuery.of(context).size;
           double appBarHeight = AppBar().preferredSize.height;
           // Could refactor this code
@@ -69,7 +69,8 @@ class _PairPageState extends State<PairPage> {
             appBar: AppBar(
               title: Row(
                 children: [
-                  SizedBox(height: 30, child: Image.asset('assets/logo-white.png')),
+                  SizedBox(
+                      height: 30, child: Image.asset('assets/logo-white.png')),
                   //  Text("Stats")
                 ],
               ),
@@ -78,7 +79,8 @@ class _PairPageState extends State<PairPage> {
                   padding: EdgeInsets.all(8),
                   child: RaisedButton(
                     color: Colors.white,
-                    child: Text("Go to GoSwap", style: TextStyle(color: Colors.blue)),
+                    child: Text("Go to GoSwap",
+                        style: TextStyle(color: Colors.blue)),
                     onPressed: () {
                       launch('https://goswap.exchange');
                     },
@@ -121,11 +123,12 @@ class _PairPageState extends State<PairPage> {
                         Wrap(
                           children: [
                             InfoContainer(
-                              value: widget.pair,
+                              value: pair.toString(),
                               title: 'Pair Name',
                               copy: false,
-                              token1Address: widget.token1Address,
-                              tokenAddress: widget.token0Address,
+                              token1Address: pair.token1,
+                              tokenAddress: pair.token0,
+                            ),
                             ReusableContainer(
                               title: 'Liquidity',
                               value: widget.liquidity,
@@ -136,15 +139,17 @@ class _PairPageState extends State<PairPage> {
                             ),
                             ReusableContainer(
                               title: 'Fees (24hr)',
-                              value: Globals.formatCurrency(Globals.toDec(fees)),
+                              value:
+                                  Globals.formatCurrency(Globals.toDec(fees)),
                             ),
                           ],
                         ),
                         Card(
                           child: Container(
-                            constraints: BoxConstraints(minWidth: 100, maxWidth: 800),
-                            padding:
-                                EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                            constraints:
+                                BoxConstraints(minWidth: 100, maxWidth: 800),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 16, horizontal: 10),
                             child: Column(
                               children: [
                                 Row(
@@ -216,9 +221,10 @@ class _PairPageState extends State<PairPage> {
                         ),
                         Card(
                           child: Container(
-                            constraints: BoxConstraints(minWidth: 100, maxWidth: 800),
-                            padding:
-                                EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                            constraints:
+                                BoxConstraints(minWidth: 100, maxWidth: 800),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 16, horizontal: 10),
                             child: Center(
                               child: Wrap(
                                 runSpacing: 10.0,
