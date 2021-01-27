@@ -88,6 +88,17 @@ class PairBucket {
       };
 
   String toString() {
-    return "${pair}";
+    var ret = pair;
+    var sp = pair.split("-");
+    if (sp.length > 1) {
+      for (var i = 0; i < sp.length; i++) {
+        var e = sp[i];
+        if (e == "WGO") {
+          sp[i] = "GO";
+        }
+      }
+      ret = "${sp[0]}-${sp[1]}";
+    }
+    return ret;
   }
 }

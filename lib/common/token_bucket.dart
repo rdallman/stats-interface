@@ -53,6 +53,7 @@ class TokenBucket {
       };
 
   String toString() {
-    return "${symbol}";
+    if (symbol == "WGO") return "GO";
+    return symbol;
   }
 }
