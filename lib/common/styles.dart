@@ -25,8 +25,8 @@ class Styles {
 
   static String round(Decimal d) {
     if (d < Decimal.one) {
-      return d.toStringAsFixed(5);
+      return "\$${d.toStringAsFixed(5)}";
     }
-    return d.toStringAsFixed(2);
+    return "\$${d.toStringAsFixed(2)}";
   }
 }
