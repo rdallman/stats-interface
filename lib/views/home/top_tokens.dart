@@ -85,7 +85,7 @@ class _TopTokensState extends State<TopTokens> {
                         tokenName: p.toString(),
                         liquidity: Globals.formatCurrency(p.liquidityUSD),
                         volume: Globals.formatCurrency(p.volumeUSD),
-                        price: Globals.formatCurrency(p.priceUSD),
+                        price: Styles.round(p.priceUSD),
                         address: p.address,
                         reserve: p.reserve.toStringAsFixed(0),
                       );
@@ -97,7 +97,7 @@ class _TopTokensState extends State<TopTokens> {
           ),
           DataCell(Text('${Globals.formatCurrency(p.liquidityUSD)}')),
           DataCell(Text('${Globals.formatCurrency(p.volumeUSD)}')),
-          DataCell(Text('${Globals.formatCurrency(p.priceUSD)}')),
+          DataCell(Text('${Styles.round(p.priceUSD)}')),
         ],
       ));
     }

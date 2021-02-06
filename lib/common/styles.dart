@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 
 class Styles {
@@ -20,5 +21,12 @@ class Styles {
 
   static Widget waiting() {
     return SizedBox(width: 40, height: 40, child: CircularProgressIndicator());
+  }
+
+  static String round(Decimal d) {
+    if (d < Decimal.one) {
+      return d.toStringAsFixed(5);
+    }
+    return d.toStringAsFixed(2);
   }
 }
