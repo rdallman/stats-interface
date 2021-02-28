@@ -64,55 +64,54 @@ class _HomeViewState extends State<HomeView> {
           // ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: const [
-                Color(0xff2c274c),
-                Color(0xff46426c),
-              ],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-            ),
+      body: // SingleChildScrollView( // ADD BACK
+          // child:
+          Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: const [
+              Color(0xff2c274c),
+              Color(0xff46426c),
+            ],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
           ),
-          child: Center(
-            child: Container(
-              // padding: const EdgeInsets.symmetric(horizontal: 30),
-              // alignment: Alignment.topCenter,
-              // constraints: BoxConstraints(maxWidth: 1200),
-              // child: ConstrainedBox(
-              // constraints: BoxConstraints(maxWidth: 1200),
-              // child: child,
-              // ),
-
-              child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    // constraints: BoxConstraints(maxHeight: 300),
-                    child: Wrap(
-                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        spacing: 40,
-                        runSpacing: 30,
-                        children: [
-                          PaddedCard(child: LiquidityChart(totalsF)),
-                          PaddedCard(child: VolumeChart(totalsF)),
-                        ]),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Wrap(spacing: 30, runSpacing: 30, children: [
-                    PaddedCard(child: TopPairs()),
-                    PaddedCard(child: TopTokens()),
-                  ]),
-                ],
-              ),
-            ),
+        ),
+        height: double.infinity,
+        child: Center(
+          // REMOVE
+          child: Container(
+            child: Text("Down for maintenance, check back tomorrow..."),
+            // child: Column( // ADD BACK
+            //   // crossAxisAlignment: CrossAxisAlignment.stretch,
+            //   children: <Widget>[
+            //     const SizedBox(
+            //       height: 10,
+            //     ),
+            //     // Expanded(
+            //     // child:
+            //     // Center(
+            //     // child:
+            //     // Container(
+            //     //   // constraints: BoxConstraints(maxHeight: 300),
+            //     //   child: Wrap(
+            //     //       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //     //       spacing: 40,
+            //     //       runSpacing: 30,
+            //     //       children: [
+            //     //         PaddedCard(child: LiquidityChart(totalsF)),
+            //     //         PaddedCard(child: VolumeChart(totalsF)),
+            //     //       ]),
+            //     // ),
+            //     // const SizedBox(
+            //     //   height: 20,
+            //     // ),
+            //     // Wrap(spacing: 30, runSpacing: 30, children: [
+            //     //   PaddedCard(child: TopPairs()),
+            //     //   PaddedCard(child: TopTokens()),
+            //     // ]),
+            //   ],
+            // ),
           ),
         ),
       ),
