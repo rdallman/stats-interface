@@ -11,6 +11,9 @@ class Globals {
   static NumberFormat usdFormatCompact =
       NumberFormat.compactCurrency(locale: "en_US", symbol: "\$");
 
+  static NumberFormat usdFormatCompactFraction =
+      NumberFormat.compactCurrency(locale: "en_US", symbol: "\$", decimalDigits: 5);
+
   static NumberFormat usdFormat = NumberFormat.simpleCurrency(locale: "en_US");
 
   static String formatCurrency(Decimal d) {

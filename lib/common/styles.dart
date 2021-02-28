@@ -1,5 +1,7 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:goswapinfo/common/globals.dart';
 
 class Styles {
   static Image logo = Image(image: AssetImage('TODO'), height: 24);
@@ -28,5 +30,12 @@ class Styles {
       return "\$${d.toStringAsFixed(5)}";
     }
     return "\$${d.toStringAsFixed(2)}";
+  }
+
+  static NumberFormat compactCurrencyFormatter(Decimal d) {
+    if (d < Decimal.one) {
+      return Globals.usdFormatCompactFraction;
+    }
+    return Globals.usdFormatCompact;
   }
 }

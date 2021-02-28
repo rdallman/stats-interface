@@ -17,8 +17,6 @@ class TokenPriceChartState extends State<TokenPriceChart> {
   bool priceIsLowerThanOneDollar;
   Future<List<TokenBucket>> tokenBucketF;
 
-  var nf = NumberFormat.compactCurrency(locale: "en_US", symbol: "\$");
-
   @override
   void initState() {
     super.initState();
@@ -60,7 +58,7 @@ class TokenPriceChartState extends State<TokenPriceChart> {
                       height: 4,
                     ),
                     Text(
-                      nf.format(last.priceUSD.toDouble()),
+                      Styles.round(last.priceUSD),
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 32,
@@ -99,7 +97,7 @@ class TokenPriceChartState extends State<TokenPriceChart> {
 
                             tickFormatterSpec: charts
                                 .BasicNumericTickFormatterSpec.fromNumberFormat(
-                              Globals.usdFormatCompact,
+                                Styles.compactCurrencyFormatter(last.priceUSD),
                             ),
                             renderSpec: new charts.GridlineRendererSpec(
                               labelStyle: new charts.TextStyleSpec(
