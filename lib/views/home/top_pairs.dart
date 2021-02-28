@@ -90,8 +90,8 @@ class _TopPairsState extends State<TopPairs> {
                     builder: (context) {
                       return PairPage(
                         pair: p.toString(),
-                        liquidity: Globals.formatCurrency(p.liquidityUSD),
-                        volume: Globals.formatCurrency(p.volumeUSD),
+                        liquidity: p.liquidityUSD,
+                        volume: p.volumeUSD,
                         pairAddress: p.address,
                         // token0Address: p.token0,
                         // token1Address: p.token1,

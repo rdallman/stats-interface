@@ -16,6 +16,15 @@ class Globals {
 
   static NumberFormat usdFormat = NumberFormat.simpleCurrency(locale: "en_US");
 
+  static NumberFormat percentFormat = NumberFormat.decimalPercentPattern(locale: "en_US", decimalDigits: 1);
+
+  static String formatPercent(Decimal d) {
+    if (d == null) {
+      return percentFormat.format(0.0);
+    }
+    return percentFormat.format(d.toDouble());
+  }
+
   static String formatCurrency(Decimal d) {
     if (d == null) {
       return usdFormat.format(0.0);
@@ -24,4 +33,5 @@ class Globals {
   }
 
   static DateFormat mdFormat = DateFormat('MMM d');
+
 }

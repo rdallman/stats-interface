@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:decimal/decimal.dart';
 import 'package:goswapinfo/common/globals.dart';
 import 'package:goswapinfo/common/pair.dart';
 import 'package:goswapinfo/common/api.dart';
@@ -11,8 +12,8 @@ import 'package:goswapinfo/pages/views/charts/pair_liquidity_chart.dart';
 
 class PairPage extends StatefulWidget {
   final String pair;
-  final String liquidity;
-  final String volume;
+  final Decimal liquidity;
+  final Decimal volume;
   final String pairAddress;
 
   PairPage({
@@ -39,10 +40,8 @@ class _PairPageState extends State<PairPage> {
 
   @override
   Widget build(BuildContext context) {
-    String fees = (double.parse(
-                widget.volume.replaceAll(RegExp(r'[^\w\s .-]+'), '')) *
-            0.003)
-        .toStringAsFixed(2);
+    double feesNum = widget.volume.toDouble() * 0.003;
+    String fees = feesNum.toStringAsFixed(2);
     var screenSize = MediaQuery.of(context).size;
     double appBarHeight = AppBar().preferredSize.height;
     // Could refactor this code
@@ -103,6 +102,8 @@ class _PairPageState extends State<PairPage> {
               var token0Symbol = widget.pair.split("-")[0];
               var token1Symbol = widget.pair.split("-")[1];
 
+              double apy = (feesNum * 365 * 100) / widget.liquidity.toDouble();
+
               return Center(
                 child: Container(
                   constraints: BoxConstraints(maxWidth: 1200),
@@ -123,25 +124,22 @@ class _PairPageState extends State<PairPage> {
                       ),
                       Wrap(
                         children: [
-                          InfoContainer(
-                            value: pair.toString(),
-                            title: 'Pair Name',
-                            copy: false,
-                            token1Address: pair.token1,
-                            tokenAddress: pair.token0,
-                          ),
                           ReusableContainer(
                             title: 'Liquidity',
-                            value: widget.liquidity,
+                            value: Globals.formatCurrency(widget.liquidity),
                           ),
                           ReusableContainer(
                             title: 'Volume (24hr)',
-                            value: widget.volume,
+                            value: Globals.formatCurrency(widget.volume),
                           ),
                           ReusableContainer(
                             title: 'Fees (24hr)',
                             value:
                                 Globals.formatCurrency(Globals.toDec(fees)),
+                          ),
+                          ReusableContainer(
+                            title: 'APY (24hr)',
+                            value: Globals.percentFormat.format(apy),
                           ),
                         ],
                       ),
@@ -231,9 +229,11 @@ class _PairPageState extends State<PairPage> {
                               runSpacing: 10.0,
                               children: [
                                 InfoContainer(
-                                  value: widget.pair,
+                                  value: pair.toString(),
                                   title: 'Pair Name',
                                   copy: false,
+                                  token1Address: pair.token1,
+                                  tokenAddress: pair.token0,
                                 ),
                                 InfoContainer(
                                   value: widget.pairAddress,
