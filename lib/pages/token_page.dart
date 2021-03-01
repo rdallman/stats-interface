@@ -97,6 +97,11 @@ class _TokenPageState extends State<TokenPage> {
                       Image.network(
                         'https://raw.githubusercontent.com/goswap/cryptocurrency-icons/master/128/color/${widget.tokenName.toLowerCase()}.png',
                         height: 40,
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace stackTrace) {
+                          print("error getting token icon: ${exception}");
+                          return Container();
+                        },
                       ),
                     ],
                   ),
