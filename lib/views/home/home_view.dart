@@ -65,7 +65,7 @@ class _HomeViewState extends State<HomeView> {
         ],
       ),
       body: SingleChildScrollView(
-        // ADD BACK
+        // remove ScrollView for maintenance message
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -77,42 +77,34 @@ class _HomeViewState extends State<HomeView> {
               end: Alignment.topCenter,
             ),
           ),
-          height: double.infinity,
+          // height: double.infinity, // add for maintenance message
           child: Center(
-            // REMOVE
-            child: Container(
-              // child: Text("Down for maintenance, check back tomorrow..."),
-              child: Column(
-                // ADD BACK
-                // crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  // Expanded(
-                  // child:
-                  // Center(
-                  // child:
-                  // Container(
-                  //   // constraints: BoxConstraints(maxHeight: 300),
-                  //   child: Wrap(
-                  //       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //       spacing: 40,
-                  //       runSpacing: 30,
-                  //       children: [
-                  //         PaddedCard(child: LiquidityChart(totalsF)),
-                  //         PaddedCard(child: VolumeChart(totalsF)),
-                  //       ]),
-                  // ),
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
-                  // Wrap(spacing: 30, runSpacing: 30, children: [
-                  //   PaddedCard(child: TopPairs()),
-                  //   PaddedCard(child: TopTokens()),
-                  // ]),
-                ],
-              ),
+            child:
+                // child: Text("Down for maintenance, check back tomorrow..."),
+                Column(
+              children: <Widget>[
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  // constraints: BoxConstraints(maxHeight: 300),
+                  child: Wrap(
+                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      spacing: 40,
+                      runSpacing: 30,
+                      children: [
+                        PaddedCard(child: LiquidityChart(totalsF)),
+                        PaddedCard(child: VolumeChart(totalsF)),
+                      ]),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Wrap(spacing: 30, runSpacing: 30, children: [
+                  PaddedCard(child: TopPairs()),
+                  PaddedCard(child: TopTokens()),
+                ]),
+              ],
             ),
           ),
         ),
